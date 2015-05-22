@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb</Output>
-      <Time>2015-05-20T16:20:23+01:00</Time>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb</Output>
+      <Time>2015-05-22T21:53:05.7875156+01:00</Time>
     </Item>
     <Item>
       <Source>playerPic.png</Source>
@@ -16,8 +16,17 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb</Output>
-      <Time>2015-05-20T16:20:21+01:00</Time>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb</Output>
+      <Time>2015-05-22T21:53:05.79252+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Wolf.png</Source>
+      <Name>Wolf</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Wolf.xnb</Output>
+      <Time>2015-05-22T13:03:14.4445852+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -25,10 +34,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map GeneratorContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map GeneratorContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map GeneratorContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map GeneratorContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -57,7 +66,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2014-11-20T01:19:33.3353738+00:00</Value>
+        <Value>2014-10-20T12:15:14.3722312+01:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

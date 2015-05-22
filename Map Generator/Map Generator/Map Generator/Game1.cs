@@ -27,6 +27,10 @@ namespace Map_Generator
         Player player;
         Texture2D playerPic;
 
+        //temporary wolf, will be made list or possibly array later. Most likely list. We'll see.
+        Wolf wolf1;
+        Texture2D wolfPic;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,6 +51,10 @@ namespace Map_Generator
 
             playerPic = Content.Load<Texture2D>("playerPic");
             player = new Player(new Vector2(screenWidth/2, screenHeight/2), playerPic);
+
+            //temp wolf pic, will need to be updated with spritesheet
+            wolfPic = Content.Load<Texture2D>("Wolf");
+            wolf1 = new Wolf(new Vector2(200, 150), wolfPic, wolfPic.Width, wolfPic.Height);
 
             chunks.Add(new Chunks());
             chunks[0].Initialize(spriteSheet, new Vector2(0, 0));
@@ -98,11 +106,27 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
+
+            //PRESS ESCAPE TO QUIT. DEVELOPMENT TOOL ONLY REMOVE FOR RELEASE
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
+            //PRESS BACK TO QUIT. DEVELOPMENT TOOL ONLY REMOVE FOR RELEASE
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed) this.Exit();
+
             player.Update(gameTime, Keyboard.GetState());
             for (int i = 0; i < chunks.Count; i++)
             {
                 player.Collisions(chunks[i].wallTiles);
             }
+
+            
+            wolf1.Update(gameTime, player);
+
+            //OLD COLLISION CODE, NEEDS REPLACING
+            //for (int i = 0; i < chunks.Count; i++)
+            //{
+            //    wolf1.Collisions(chunks[i].isCollidable, chunks[i].tiles);
+            //}
+
 
             camera.Move(-player.velocity);
             base.Update(gameTime);
@@ -121,6 +145,7 @@ namespace Map_Generator
 
             spriteBatch.Begin();
             player.Draw(spriteBatch);
+            wolf1.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
