@@ -15,8 +15,14 @@ namespace Map_Generator
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont titleFont;
+        SpriteFont smallFont;
+        KeyboardState oldKState;
+        KeyboardState newKState;
         Random rand;
 
+        enum currentScreen { splashScreen, menuScreen, settingsScreen, playerScreen, gameplayScreen, pauseScreen, completeScreen, gameoverScreen };
+        currentScreen screen = new currentScreen();
         Texture2D spriteSheet;
         List<Chunks> chunks;
 
@@ -36,53 +42,56 @@ namespace Map_Generator
         protected override void Initialize()
         {
             rand = new Random();
-            spriteSheet = Content.Load<Texture2D>("SpriteSheet");
-
+            screen = currentScreen.splashScreen;
+            oldKState = Keyboard.GetState();
             camera = new Camera();
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
+            playerPic = Content.Load<Texture2D>("playerPic");
+            spriteSheet = Content.Load<Texture2D>("SpriteSheet");
+
             chunks = new List<Chunks>();
 
-            playerPic = Content.Load<Texture2D>("playerPic");
-            player = new Player(new Vector2(screenWidth/2, screenHeight/2), playerPic);
-
-            chunks.Add(new Chunks());
-            chunks[0].Initialize(spriteSheet, new Vector2(0, 0));
+            //Creates each of the first 9 chunks in a 3x3 grid
+            //Middle
+            chunks.Add(new Chunks(spriteSheet, new Vector2(0, 0)));
             chunks[0].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[1].Initialize(spriteSheet, new Vector2(-640, -640));
+            //Top-Left
+            chunks.Add(new Chunks(spriteSheet, new Vector2(-640, -640)));
             chunks[1].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[2].Initialize(spriteSheet, new Vector2(0, -640));
+            //Top
+            chunks.Add(new Chunks(spriteSheet, new Vector2(0, -640)));
             chunks[2].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[3].Initialize(spriteSheet, new Vector2(640, -640));
+            //Top-Right
+            chunks.Add(new Chunks(spriteSheet, new Vector2(640, -640)));
             chunks[3].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[4].Initialize(spriteSheet, new Vector2(-640, 0));
+            //Left
+            chunks.Add(new Chunks(spriteSheet, new Vector2(-640, 0)));
             chunks[4].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[5].Initialize(spriteSheet, new Vector2(640, 0));
+            //Right
+            chunks.Add(new Chunks(spriteSheet, new Vector2(640, 0)));
             chunks[5].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[6].Initialize(spriteSheet, new Vector2(-640, 640));
+            //Bottom-Left
+            chunks.Add(new Chunks(spriteSheet, new Vector2(-640, 640)));
             chunks[6].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[7].Initialize(spriteSheet, new Vector2(0, 640));
+            //Bottom
+            chunks.Add(new Chunks(spriteSheet, new Vector2(0, 640)));
             chunks[7].playerPresent = true;
 
-            chunks.Add(new Chunks());
-            chunks[8].Initialize(spriteSheet, new Vector2(640, 640));
+            //Bottom-Right
+            chunks.Add(new Chunks(spriteSheet, new Vector2(640, 640)));
             chunks[8].playerPresent = true;
+
+            player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), playerPic);
 
             base.Initialize();
         }
@@ -90,6 +99,9 @@ namespace Map_Generator
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            titleFont = Content.Load<SpriteFont>("titleFont");
+            smallFont = Content.Load<SpriteFont>("smallFont");
+
         }
 
         protected override void UnloadContent()
@@ -98,30 +110,137 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
-            player.Update(gameTime, Keyboard.GetState());
-            for (int i = 0; i < chunks.Count; i++)
+            newKState = Keyboard.GetState();
+            switch (screen)
             {
-                player.Collisions(chunks[i].wallTiles);
-            }
+                case currentScreen.splashScreen:
+                    {
+                        if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E))
+                        {
+                            screen = currentScreen.menuScreen;
+                        }
+                        break;
+                    }
+                case currentScreen.menuScreen:
+                    {
+                        if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E))
+                        {
+                            screen = currentScreen.playerScreen;
+                        }
+                        if (newKState.IsKeyDown(Keys.R) && !oldKState.IsKeyDown(Keys.R))
+                        {
+                            screen = currentScreen.settingsScreen;
+                        }
+                        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        {
+                            this.Exit();
+                        }
+                        break;
+                    }
+                case currentScreen.playerScreen:
+                    {
 
-            camera.Move(-player.velocity);
+                        break;
+                    }
+                case currentScreen.pauseScreen:
+                    {
+
+                        break;
+                    }
+                case currentScreen.gameplayScreen:
+                    {
+                        player.Update(gameTime, Keyboard.GetState());
+                        for (int i = 0; i < chunks.Count; i++)
+                        {
+                            player.Collisions(chunks[i].wallTiles);
+                        }
+
+                        camera.Move(player.velocity);
+                        break;
+                    }
+                case currentScreen.completeScreen:
+                    {
+
+                        break;
+                    }
+                case currentScreen.gameoverScreen:
+                    {
+
+                        break;
+                    }
+                case currentScreen.settingsScreen:
+                    {
+
+                        break;
+                    }
+            }
+            oldKState = newKState;
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin(0, null, null, null, null, null, camera.getTransformation());
-            foreach (Chunks chunk in chunks)
+            switch (screen)
             {
-                chunk.Draw(spriteBatch);
-            }
-            spriteBatch.End();
+                case currentScreen.splashScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+                case currentScreen.menuScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            player.Draw(spriteBatch);
-            spriteBatch.End();
+                        spriteBatch.Begin();
+                        spriteBatch.DrawString(titleFont, "The Highlanders", new Vector2(400, 200), Color.White);
+                        spriteBatch.DrawString(smallFont, "Press E - Play", new Vector2(400, 400), Color.White);
+                        spriteBatch.DrawString(smallFont, "Press R - Settings", new Vector2(400, 450), Color.White);
+                        spriteBatch.DrawString(smallFont, "Press Esc - Exit", new Vector2(400, 500), Color.White);
+                        spriteBatch.End();
+
+                        break;
+                    }
+                case currentScreen.playerScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+                case currentScreen.pauseScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+                case currentScreen.gameplayScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        spriteBatch.Begin(0, null, null, null, null, null, camera.getTransformation());
+                        foreach (Chunks chunk in chunks)
+                        {
+                            chunk.Draw(spriteBatch);
+                        }
+                        spriteBatch.End();
+
+                        spriteBatch.Begin();
+                        player.Draw(spriteBatch);
+                        spriteBatch.End();
+                        break;
+                    }
+                case currentScreen.completeScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+                case currentScreen.gameoverScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+                case currentScreen.settingsScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
+                    }
+            }
 
             base.Draw(gameTime);
         }

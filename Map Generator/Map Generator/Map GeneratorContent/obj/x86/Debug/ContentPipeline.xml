@@ -7,7 +7,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb</Output>
+      <Output>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb</Output>
       <Time>2015-05-20T16:20:23+01:00</Time>
     </Item>
     <Item>
@@ -16,8 +16,26 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb</Output>
+      <Output>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb</Output>
       <Time>2015-05-20T16:20:21+01:00</Time>
+    </Item>
+    <Item>
+      <Source>titleFont.spritefont</Source>
+      <Name>titleFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\titleFont.xnb</Output>
+      <Time>2015-05-22T22:30:30.7900027+01:00</Time>
+    </Item>
+    <Item>
+      <Source>smallFont.spritefont</Source>
+      <Name>smallFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\smallFont.xnb</Output>
+      <Time>2015-05-22T22:28:24.9268037+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -25,10 +43,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map GeneratorContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map GeneratorContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map GeneratorContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map GeneratorContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\adam\Google Drive\Group Project\Adam\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

@@ -47,8 +47,7 @@ namespace Map_Generator
 
         public Matrix getTransformation()
         {
-            transform =
-              Matrix.CreateTranslation(new Vector3(pos.X, pos.Y, 0)) *
+            transform = Matrix.CreateTranslation(new Vector3(pos.X, pos.Y, 0)) *
                                          Matrix.CreateRotationZ(Rotation) *
                                          Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
                                          Matrix.CreateTranslation(new Vector3(0, 0, 0));

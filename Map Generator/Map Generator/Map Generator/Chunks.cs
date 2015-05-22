@@ -24,12 +24,12 @@ namespace Map_Generator
         int width = 20;
         int height = 20;
 
-        public void Initialize(Texture2D image, Vector2 pos)
+        public Chunks(Texture2D image, Vector2 pos)
         {
             rand = new Random();
             chunkPos = pos;
             spriteSheet = image;
-            chunkBounds = new Rectangle((int)pos.X, (int)pos.Y, tileSize * width, tileSize * height);
+            chunkBounds = new Rectangle((int)pos.X - 640, (int)pos.Y - 640, tileSize * width * 3, tileSize * height * 3);
 
             //Makes all tiles into floor as a base layer
             grassTiles = new List<Rectangle>();
