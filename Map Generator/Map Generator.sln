@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Map Generator", "Map Generator\Map Generator\Map Generator.csproj", "{84A16253-4CC4-4276-9AF3-BF418539BCC4}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "Map GeneratorContent", "Map Generator\Map GeneratorContent\Map GeneratorContent.contentproj", "{D65D3708-44F4-4D1A-9B6B-B2AD4BD1C2E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84A16253-4CC4-4276-9AF3-BF418539BCC4}.Debug|x86.ActiveCfg = Debug|x86
+		{84A16253-4CC4-4276-9AF3-BF418539BCC4}.Debug|x86.Build.0 = Debug|x86
+		{84A16253-4CC4-4276-9AF3-BF418539BCC4}.Release|x86.ActiveCfg = Release|x86
+		{84A16253-4CC4-4276-9AF3-BF418539BCC4}.Release|x86.Build.0 = Release|x86
+		{D65D3708-44F4-4D1A-9B6B-B2AD4BD1C2E9}.Debug|x86.ActiveCfg = Debug|x86
+		{D65D3708-44F4-4D1A-9B6B-B2AD4BD1C2E9}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
