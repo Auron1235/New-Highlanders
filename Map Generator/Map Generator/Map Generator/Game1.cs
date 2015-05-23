@@ -98,7 +98,7 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
-            player.Update(gameTime, Keyboard.GetState());
+            player.Update(gameTime, Keyboard.GetState(), camera);
 
             for (int i = 0; i < chunks.Count; i++)
             {
