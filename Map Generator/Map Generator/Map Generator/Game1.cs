@@ -99,7 +99,6 @@ namespace Map_Generator
         protected override void Update(GameTime gameTime)
         {
             player.Update(gameTime, Keyboard.GetState());
-
             for (int i = 0; i < chunks.Count; i++)
             {
                 player.Collisions(chunks[i].wallTiles);
