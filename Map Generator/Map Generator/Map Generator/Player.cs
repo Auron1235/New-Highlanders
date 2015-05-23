@@ -76,7 +76,7 @@ namespace Map_Generator
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera camera)
+        public void Update(GameTime gameTime, KeyboardState curKeyState)
         {
             previousPosition = position;
 
