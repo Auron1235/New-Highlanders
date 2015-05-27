@@ -17,15 +17,19 @@ namespace Map_Generator
         SpriteBatch spriteBatch;
         Random rand;
 
-        Texture2D spriteSheet;
-        List<Chunks> chunks;
+        AudioManager audioManager;
+        ChunkManager chunkManager;
+        Camera2D m_camera;
 
-        Camera camera;
+        Texture2D spriteSheet;
+
         int screenWidth = 1024;
         int screenHeight = 768;
 
         Player player;
         Texture2D playerPic;
+
+        Settings settings;
 
         public Game1()
         {
@@ -38,51 +42,34 @@ namespace Map_Generator
             rand = new Random();
             spriteSheet = Content.Load<Texture2D>("SpriteSheet");
 
-            camera = new Camera();
+            m_camera = new Camera2D(0, 0, screenWidth, screenHeight);
+
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
-            chunks = new List<Chunks>();
+            audioManager = new AudioManager();
+            audioManager.Initialize(Content);
+
+            settings = new Settings();
 
             playerPic = Content.Load<Texture2D>("playerPic");
             player = new Player(new Vector2(screenWidth/2, screenHeight/2), playerPic);
 
-            chunks.Add(new Chunks());
-            chunks[0].Initialize(spriteSheet, new Vector2(0, 0));
-            chunks[0].playerPresent = true;
+            //new chunk code
+            chunkManager = new ChunkManager();
+            chunkManager.Initialize(499, spriteSheet); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
 
-            chunks.Add(new Chunks());
-            chunks[1].Initialize(spriteSheet, new Vector2(-640, -640));
-            chunks[1].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[2].Initialize(spriteSheet, new Vector2(0, -640));
-            chunks[2].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[3].Initialize(spriteSheet, new Vector2(640, -640));
-            chunks[3].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[4].Initialize(spriteSheet, new Vector2(-640, 0));
-            chunks[4].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[5].Initialize(spriteSheet, new Vector2(640, 0));
-            chunks[5].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[6].Initialize(spriteSheet, new Vector2(-640, 640));
-            chunks[6].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[7].Initialize(spriteSheet, new Vector2(0, 640));
-            chunks[7].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[8].Initialize(spriteSheet, new Vector2(640, 640));
-            chunks[8].playerPresent = true;
+            //debug player positioning code
+            for (int i = 0; i < chunkManager.Chunks.Count; i++)
+            {
+                if (chunkManager.Chunks[i].PlayerSpawn == true)
+                {
+                    player.position = chunkManager.Chunks[i].ChunkCentre();
+                    m_camera.Target = player.position;
+                    break;
+                }
+            }
 
             base.Initialize();
         }
@@ -98,13 +85,47 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
             player.Update(gameTime, Keyboard.GetState());
-            for (int i = 0; i < chunks.Count; i++)
+
+            m_camera.Target = player.position;
+
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
+            //{                
+            //    settings.MusicSettings(audioManager);
+            //}
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {               
+                int testRand = rand.Next(0, 9);                               
+                audioManager.PlaySfx(audioManager.mFootSteps[testRand]);                               
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
             {
-                player.Collisions(chunks[i].wallTiles);
+                int testRand = rand.Next(0,35);
+                audioManager.PlaySfx(audioManager.mHitSounds[testRand]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Pause))
+            {
+                int testRand = rand.Next(0,25);
+                audioManager.PlaySfx(audioManager.mSwooshSounds[testRand]);
+
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.V))
+            {                
+                audioManager.PlaySfx(audioManager.mMenuBack);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.B))
+            {
+                audioManager.PlaySfx(audioManager.mMenuSelect);
             }
 
-            camera.Move(-player.velocity);
+            //for (int i = 0; i < chunks.Count; i++)
+            //{
+            //    player.Collisions(chunks[i].wallTiles);
+            //}
+
+            //TODO DEBUG - Only draw what is on the screen.
+            m_camera.UpdateViewPort(new Vector2(0,0));
             base.Update(gameTime);
         }
 
@@ -112,14 +133,26 @@ namespace Map_Generator
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(0, null, null, null, null, null, camera.getTransformation());
-            foreach (Chunks chunk in chunks)
-            {
-                chunk.Draw(spriteBatch);
-            }
+            spriteBatch.Begin(SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        null,
+                        m_camera.GetViewPortMatrix);
+
+            chunkManager.Draw(spriteBatch, m_camera);
+
             spriteBatch.End();
 
-            spriteBatch.Begin();
+
+            spriteBatch.Begin(SpriteSortMode.BackToFront,
+                        BlendState.AlphaBlend,
+                        null,
+                        null,
+                        null,
+                        null,
+                        m_camera.GetViewPortMatrix);
             player.Draw(spriteBatch);
             spriteBatch.End();
 

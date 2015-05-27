@@ -11,19 +11,70 @@ namespace Map_Generator
     {
         public Vector2 position;
         public Vector2 velocity;
-        public Rectangle bounds;
-        public Rectangle feet;
         public Texture2D image;
-        public int health = 10;
+        public Rectangle boundingBox;
+        public Rectangle boundingFootprint;
 
-        public void Draw(SpriteBatch sb)
+        public enum AnimationState
         {
-            sb.Draw(image, bounds, Color.White);
+            Idle,
+            WalkingLeft,
+            WalkingRight,
+            Attacking,
+            Dying,
+            Dead
         }
+        public static AnimationState curAnimState = AnimationState.Idle;
 
-        public void BasicAttack()
+        private List<Rectangle> mFrames = new List<Rectangle>();
+        private int mCurrentFrame;
+        private float mFrameTime = 0.0833f;
+        private float mTimeForCurrentFrame;
+
+        #region CONSTRUCTORS
+
+        public Sprite()
+        { }
+        //public Sprite(Vector2 initialWorldLocation, Texture2D initialSpriteSheet,
+        //    Rectangle initialFrame, Vector2 initialVelocity)
+        //{
+        //    position = initialWorldLocation;
+        //    image = initialSpriteSheet;
+        //    mFrames.Add(initialFrame);
+        //    velocity = initialVelocity;
+        //}
+        #endregion
+
+        #region GETSETS -DRAWING AND ANIMATION
+        public int FrameWidth
         {
+            get { return mFrames[0].Width; }
+        }
+        public int FrameHeight
+        {
+            get { return mFrames[0].Height; }
+        }
+        public int Frame
+        {
+            get { return mCurrentFrame; }
+            set { mCurrentFrame = (int)MathHelper.Clamp(value, 0, mFrames.Count - 1); }
+        }
+        public float FrameTime
+        {
+            get { return mFrameTime; }
+            set { mFrameTime = MathHelper.Clamp(0, value, mFrames.Count - 1); }
+        }
+        public Rectangle Source
+        {
+            get { return mFrames[mCurrentFrame]; }
+            set { mFrames[mCurrentFrame] = value; }
+        }
+        #endregion
 
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(image, boundingBox, Color.White);
         }
     }
 }

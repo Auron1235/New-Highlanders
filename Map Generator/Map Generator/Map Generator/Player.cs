@@ -10,6 +10,8 @@ namespace Map_Generator
 {
     class Player
     {
+        public Sprite sprite;
+
         public Vector2 position;
         public Vector2 velocity;
         public Rectangle boundingBox;
@@ -76,7 +78,7 @@ namespace Map_Generator
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera camera)
+        public void Update(GameTime gameTime, KeyboardState curKeyState)
         {
             previousPosition = position;
 
