@@ -485,11 +485,6 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="Sound Effects\WolfSounds\Howl.mp3">
-      <Name>Howl</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
     <Compile Include="Sound Effects\WolfSounds\Whine.mp3">
       <Name>Whine</Name>
       <Importer>Mp3Importer</Importer>
@@ -529,6 +524,44 @@
     </Compile>
     <Compile Include="Sound Effects\UI and Drops\swordDrop.wav">
       <Name>swordDrop</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sound Effects\WolfSounds\Howl.wav">
+      <Name>Howl</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sound Effects\BearSounds\BearGrowl0.wav">
+      <Name>BearGrowl0</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\BearSounds\BearGrowl1.wav">
+      <Name>BearGrowl1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\BearSounds\BearHowl.wav">
+      <Name>BearHowl</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sound Effects\BearSounds\BearWhine.wav">
+      <Name>BearWhine</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sound Effects\BearSounds\BearGrowl2.wav">
+      <Name>BearGrowl2</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>

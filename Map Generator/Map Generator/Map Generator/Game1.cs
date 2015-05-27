@@ -30,7 +30,7 @@ namespace Map_Generator
         Texture2D playerPic;
 
         Settings settings;
-        const int TimerCooldown = 2000;
+        const int TimerCooldown = 5000;
         int timer;
 
         public Game1()
@@ -92,10 +92,13 @@ namespace Map_Generator
 
             m_camera.Target = player.position;
 
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
-            //{
-            //    settings.VolumeSettings(audioManager.SfxVolume);
-            //}
+            //settings?
+            if (Keyboard.GetState().IsKeyDown(Keys.Tab) && audioManager.SfxVolume > 0)
+            {
+                settings.VolumeSettings(audioManager.SfxVolume);
+                //audioManager.SfxVolume -= 0.01f;
+            }
+
 
             AudioTestMethod(gameTime);
  
@@ -105,18 +108,23 @@ namespace Map_Generator
 
         private void AudioTestMethod(GameTime gameTime)
         {
+            //ALL YER AUDIO TEST CODE IS IN HERE
             //test footsteps
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 int testRand = rand.Next(0, 9);
                 audioManager.PlaySfx(audioManager.mFootSteps[testRand]);
             }
+
+
             //test hit sounds
             if (Keyboard.GetState().IsKeyDown(Keys.P))
             {
                 int testRand = rand.Next(0, 35);
                 audioManager.PlaySfx(audioManager.mHitSounds[testRand]);
             }
+
+
             //test swoosh sounds
             if (Keyboard.GetState().IsKeyDown(Keys.Pause))
             {
@@ -124,6 +132,8 @@ namespace Map_Generator
                 audioManager.PlaySfx(audioManager.mSwooshSounds[testRand]);
 
             }
+
+
             //test menu back and select sounds
             if (Keyboard.GetState().IsKeyDown(Keys.V))
             {
@@ -133,6 +143,8 @@ namespace Map_Generator
             {
                 audioManager.PlaySfx(audioManager.mMenuSelect);
             }
+
+
             //test Item Drop Sounds SOUNDS LIKE A TRANSFORMER IF YOU PLAY THEM ONE AFTER THE OTHER
             //0 & 1 are bubbles 1 & 2. 2 is Itempickup. 3 is shield drop. 4 is sword drop sounds
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
@@ -155,6 +167,8 @@ namespace Map_Generator
             {
                 audioManager.PlaySfx(audioManager.mDropSounds[4]);
             }
+
+
             //test wolf sounds, growls are 0-4. howl is 5, whine is 6
             //growls  
             timer -= gameTime.ElapsedGameTime.Milliseconds;
@@ -164,20 +178,37 @@ namespace Map_Generator
                 audioManager.PlaySfx(audioManager.mWolfSounds[testRand]);
                 timer = TimerCooldown;
             }
+            //howl
             if (Keyboard.GetState().IsKeyDown(Keys.T))
             {
                 audioManager.PlaySfx(audioManager.mWolfSounds[5]);
             }
+            //whine
             if (Keyboard.GetState().IsKeyDown(Keys.Y))
             {
                 audioManager.PlaySfx(audioManager.mWolfSounds[6]);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && audioManager.SfxVolume > 0)
-            {
-                settings.VolumeSettings(audioManager.SfxVolume);
-                //audioManager.SfxVolume -= 0.01f;
-            }
 
+
+            //test bear sounds, growls are 0-2, howl is 3, whine is 4
+            //growls
+            timer -= gameTime.ElapsedGameTime.Milliseconds;
+            if (Keyboard.GetState().IsKeyDown(Keys.H) && timer <= 0)
+            {
+                int testRand = rand.Next(0, 3);
+                audioManager.PlaySfx(audioManager.mBearSounds[testRand]);
+                timer = TimerCooldown;
+            }
+            //howl
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
+            {
+                audioManager.PlaySfx(audioManager.mBearSounds[3]);
+            }
+            //whine
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                audioManager.PlaySfx(audioManager.mBearSounds[4]);
+            }
         }
 
         protected override void Draw(GameTime gameTime)

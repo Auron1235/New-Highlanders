@@ -14,8 +14,8 @@ namespace Map_Generator
         private float mSfxVolume;
         private float mMusicVolume;
 
-        private const float mDefaultSfxVolume = 0.6f;
-        private const float mDefaultMusicVolume = 0.6f;
+        private const float mDefaultSfxVolume = 0.3f;
+        private const float mDefaultMusicVolume = 0.8f;
 
         private List<SoundEffect> mMusicTracks;
         private SoundEffectInstance mCurrentMusic;
@@ -24,11 +24,17 @@ namespace Map_Generator
         private List<SoundEffect> HitSounds = new List<SoundEffect>();
         private List<SoundEffect> SwooshSounds = new List<SoundEffect>();
         private List<SoundEffect> DropSounds = new List<SoundEffect>();
+        private List<SoundEffect> WolfSounds = new List<SoundEffect>();
+        private List<SoundEffect> BearSounds = new List<SoundEffect>();
 
         private SoundEffect MenuBack;
         private SoundEffect MenuSelect;
 
-        private List<SoundEffect> WolfSounds = new List<SoundEffect>();
+
+
+
+        
+        
 
 
         
@@ -89,9 +95,13 @@ namespace Map_Generator
         public List<SoundEffect> mWolfSounds
         {
             get { return WolfSounds; }
-            set { WolfSounds = value; }
+            //set { WolfSounds = value; }
         }
-
+        public List<SoundEffect> mBearSounds
+        {
+            get { return BearSounds; }
+            //set { BearSounds = value; }
+        }
         #endregion
 
         //CONSTRUCTOR
@@ -155,6 +165,14 @@ namespace Map_Generator
             mWolfSounds.Add(Content.Load<SoundEffect>("Sound Effects/WolfSounds/Howl"));
             mWolfSounds.Add(Content.Load<SoundEffect>("Sound Effects/WolfSounds/Whine"));
 
+            //Bear Sounds
+            for (int i = 0; i < 3; i++)
+            {
+                mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearGrowl" + i.ToString()));
+            }
+            
+            mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearHowl"));
+            mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearWhine"));
         }
 
         public void PlaySfx(SoundEffect soundEffect)

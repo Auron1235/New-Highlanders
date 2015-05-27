@@ -830,15 +830,6 @@
       <Time>2015-05-27T19:28:58+01:00</Time>
     </Item>
     <Item>
-      <Source>Sound Effects\WolfSounds\Howl.mp3</Source>
-      <Name>Sound Effects\WolfSounds\Howl</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-      <Options>None</Options>
-      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Howl.xnb</Output>
-      <Time>2015-05-27T19:33:18+01:00</Time>
-    </Item>
-    <Item>
       <Source>Sound Effects\WolfSounds\Whine.mp3</Source>
       <Name>Sound Effects\WolfSounds\Whine</Name>
       <Importer>Mp3Importer</Importer>
@@ -846,6 +837,60 @@
       <Options>None</Options>
       <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Whine.xnb</Output>
       <Time>2015-05-27T19:23:46+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\WolfSounds\Howl.wav</Source>
+      <Name>Sound Effects\WolfSounds\Howl</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Howl.xnb</Output>
+      <Time>2014-10-02T21:54:42+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\BearSounds\BearGrowl0.wav</Source>
+      <Name>Sound Effects\BearSounds\BearGrowl0</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl0.xnb</Output>
+      <Time>2015-05-27T20:55:08+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\BearSounds\BearGrowl1.wav</Source>
+      <Name>Sound Effects\BearSounds\BearGrowl1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl1.xnb</Output>
+      <Time>2015-05-27T20:57:48+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\BearSounds\BearHowl.wav</Source>
+      <Name>Sound Effects\BearSounds\BearHowl</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearHowl.xnb</Output>
+      <Time>2015-05-27T20:54:46+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\BearSounds\BearWhine.WAV</Source>
+      <Name>Sound Effects\BearSounds\BearWhine</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearWhine.xnb</Output>
+      <Time>2015-05-27T20:58:10+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Sound Effects\BearSounds\BearGrowl2.wav</Source>
+      <Name>Sound Effects\BearSounds\BearGrowl2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl2.xnb</Output>
+      <Time>2015-05-27T20:58:28+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

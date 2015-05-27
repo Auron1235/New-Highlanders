@@ -221,10 +221,15 @@ C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\M
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
-C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Howl.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Whine.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Growl0.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Growl1.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Growl2.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Growl3.xnb
 C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Growl4.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\WolfSounds\Howl.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl0.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl1.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearHowl.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearWhine.xnb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\Sound Effects\BearSounds\BearGrowl2.xnb
