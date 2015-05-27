@@ -30,6 +30,8 @@ namespace Map_Generator
         Texture2D playerPic;
 
         Settings settings;
+        const int TimerCooldown = 2000;
+        int timer;
 
         public Game1()
         {
@@ -91,42 +93,91 @@ namespace Map_Generator
             m_camera.Target = player.position;
 
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
-            //{                
-            //    settings.MusicSettings(audioManager);
+            //{
+            //    settings.VolumeSettings(audioManager.SfxVolume);
             //}
+
+            AudioTestMethod(gameTime);
+ 
+            m_camera.UpdateViewPort(new Vector2(0,0));
+            base.Update(gameTime);
+        }
+
+        private void AudioTestMethod(GameTime gameTime)
+        {
+            //test footsteps
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {               
-                int testRand = rand.Next(0, 9);                               
-                audioManager.PlaySfx(audioManager.mFootSteps[testRand]);                               
+            {
+                int testRand = rand.Next(0, 9);
+                audioManager.PlaySfx(audioManager.mFootSteps[testRand]);
             }
+            //test hit sounds
             if (Keyboard.GetState().IsKeyDown(Keys.P))
             {
-                int testRand = rand.Next(0,35);
+                int testRand = rand.Next(0, 35);
                 audioManager.PlaySfx(audioManager.mHitSounds[testRand]);
             }
+            //test swoosh sounds
             if (Keyboard.GetState().IsKeyDown(Keys.Pause))
             {
-                int testRand = rand.Next(0,25);
+                int testRand = rand.Next(0, 25);
                 audioManager.PlaySfx(audioManager.mSwooshSounds[testRand]);
 
             }
+            //test menu back and select sounds
             if (Keyboard.GetState().IsKeyDown(Keys.V))
-            {                
+            {
                 audioManager.PlaySfx(audioManager.mMenuBack);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.B))
             {
                 audioManager.PlaySfx(audioManager.mMenuSelect);
             }
+            //test Item Drop Sounds SOUNDS LIKE A TRANSFORMER IF YOU PLAY THEM ONE AFTER THE OTHER
+            //0 & 1 are bubbles 1 & 2. 2 is Itempickup. 3 is shield drop. 4 is sword drop sounds
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                audioManager.PlaySfx(audioManager.mDropSounds[0]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                audioManager.PlaySfx(audioManager.mDropSounds[1]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                audioManager.PlaySfx(audioManager.mDropSounds[2]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            {
+                audioManager.PlaySfx(audioManager.mDropSounds[3]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D5))
+            {
+                audioManager.PlaySfx(audioManager.mDropSounds[4]);
+            }
+            //test wolf sounds, growls are 0-4. howl is 5, whine is 6
+            //growls  
+            timer -= gameTime.ElapsedGameTime.Milliseconds;
+            if (Keyboard.GetState().IsKeyDown(Keys.R) && timer <= 0)
+            {
+                int testRand = rand.Next(0, 4);
+                audioManager.PlaySfx(audioManager.mWolfSounds[testRand]);
+                timer = TimerCooldown;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                audioManager.PlaySfx(audioManager.mWolfSounds[5]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Y))
+            {
+                audioManager.PlaySfx(audioManager.mWolfSounds[6]);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && audioManager.SfxVolume > 0)
+            {
+                settings.VolumeSettings(audioManager.SfxVolume);
+                //audioManager.SfxVolume -= 0.01f;
+            }
 
-            //for (int i = 0; i < chunks.Count; i++)
-            //{
-            //    player.Collisions(chunks[i].wallTiles);
-            //}
-
-            //TODO DEBUG - Only draw what is on the screen.
-            m_camera.UpdateViewPort(new Vector2(0,0));
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)

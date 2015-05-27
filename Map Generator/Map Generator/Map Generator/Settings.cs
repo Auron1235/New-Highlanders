@@ -13,18 +13,24 @@ namespace Map_Generator
         //float sfxVolume;
         //float musicVolume;
 
-        public void MusicSettings(AudioManager audio)
+        public void VolumeSettings(float volume)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                volume -= 0.1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                volume += 0.1f;
+            }
             if (GamePad.GetState(PlayerIndex.One).DPad.Right == ButtonState.Pressed)
             {
-                audio.MusicVolume += 0.1f;
+                volume += 0.1f;
             }
             if (GamePad.GetState(PlayerIndex.One).DPad.Left == ButtonState.Pressed)
             {
-                audio.MusicVolume -= 0.1f;
-            }
-
-            
+                volume -= 0.1f;
+            }            
         }
 
 

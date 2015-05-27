@@ -459,7 +459,43 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Sound Effects\WolfSounds\Growl0.wav">
+      <Name>Growl0</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Growl1.wav">
+      <Name>Growl1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Growl2.wav">
+      <Name>Growl2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Growl3.wav">
+      <Name>Growl3</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Growl4.wav">
+      <Name>Growl4</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Howl.mp3">
+      <Name>Howl</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sound Effects\WolfSounds\Whine.mp3">
+      <Name>Whine</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Sound Effects\UI and Drops\bubble1.wav">
       <Name>bubble1</Name>
