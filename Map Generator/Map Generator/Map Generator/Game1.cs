@@ -69,6 +69,9 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
+            //Escape to exit game, remove before release
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
+
             newKState = Keyboard.GetState();
             newPadState = GamePad.GetState(PlayerIndex.One);
 
