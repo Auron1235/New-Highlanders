@@ -3,6 +3,12 @@ Content\playerSheet.xnb
 Content\playerPic.xnb
 Content\ScenerySpriteSheet.xnb
 Content\SpriteSheet.xnb
+Content\Music\BattleHunger.xnb
+Content\Music\GoFourth.xnb
+Content\Music\TheGloomyMorning.xnb
+Content\Music\Theme.xnb
+Content\Music\TheRoyalKingdom.xnb
+Content\Sound Effects\WolfSounds\Whine.xnb
 Content\Sound Effects\BearSounds\BearGrowl0.xnb
 Content\Sound Effects\BearSounds\BearGrowl1.xnb
 Content\Sound Effects\BearSounds\BearGrowl2.xnb
@@ -93,9 +99,3 @@ Content\Sound Effects\WolfSounds\Growl2.xnb
 Content\Sound Effects\WolfSounds\Growl3.xnb
 Content\Sound Effects\WolfSounds\Growl4.xnb
 Content\Sound Effects\WolfSounds\Howl.xnb
-Content\Music\BattleHunger.xnb
-Content\Music\GoFourth.xnb
-Content\Music\TheGloomyMorning.xnb
-Content\Music\Theme.xnb
-Content\Music\TheRoyalKingdom.xnb
-Content\Sound Effects\WolfSounds\Whine.xnb

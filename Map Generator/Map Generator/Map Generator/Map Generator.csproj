@@ -116,7 +116,6 @@
     <Compile Include="Camera2D.cs" />
     <Compile Include="Chunk.cs" />
     <Compile Include="ChunkManager.cs" />
-    <Compile Include="Chunks.cs" />
     <Compile Include="PickUp.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

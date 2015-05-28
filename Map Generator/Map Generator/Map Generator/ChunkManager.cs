@@ -156,8 +156,18 @@ namespace Map_Generator
         {
             foreach (Chunk chunk in mChunks)
             {
-                chunk.Draw(spriteBatch, camera2D);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
+                chunk.DrawGround(spriteBatch, camera2D);
+                spriteBatch.End();
             }
+
+            foreach (Chunk chunk in mChunks)
+            {
+                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
+                chunk.DrawObstacles(spriteBatch, camera2D);
+                spriteBatch.End();
+            }
+
         }
 
         //takes a vector2 position and finds out which chunk it is on.

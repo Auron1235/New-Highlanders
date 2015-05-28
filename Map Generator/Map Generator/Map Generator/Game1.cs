@@ -48,7 +48,8 @@ namespace Map_Generator
 
         protected override void Initialize()
         {
-            spriteSheet = Content.Load<Texture2D>("SpriteSheet");
+            //spriteSheet = Content.Load<Texture2D>("SpriteSheet");
+            spriteSheet = Content.Load<Texture2D>("ScenerySpriteSheet");
 
             rand = new Random();
             smallFont = Content.Load<SpriteFont>("smallFont");
@@ -166,7 +167,13 @@ namespace Map_Generator
 
                         //DEBUG TEXT
                         Console.WriteLine("Player pos: " + player.position);
-                        Console.WriteLine("chunks" + chunkManager.Chunks.Count);
+                        Console.WriteLine("chunks: " + chunkManager.Chunks.Count);
+                        int obscount = 0;
+                        foreach (Chunk chunk in chunkManager.Chunks)
+                        {
+                            obscount += chunk.Obstacles.Count;
+                        }
+                        Console.WriteLine("obsCount: " + obscount);
 
                         //Normal control info
                         if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
@@ -208,8 +215,8 @@ namespace Map_Generator
                 case Screens.gamesettingsScreen:
                     {
                         //Normal Controls
-                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
-                        if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
+                        if (newPadState.DPad.Down == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
+                        if (newPadState.DPad.Up == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
                         if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
 
                         //DebugToggle Controls
@@ -370,30 +377,15 @@ namespace Map_Generator
                     {
                         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-                        spriteBatch.Begin(SpriteSortMode.BackToFront,
-                            BlendState.AlphaBlend,
-                            null,
-                            null,
-                            null,
-                            null,
-                            m_camera.GetViewPortMatrix);
-
-                        //draws the chunks etc and only draws what it on the screen using the camera Viewport
+                        //Draw calls are fully managed on Chunk Manager, including necessary overloads to SpriteBatch.
+                        //DO NOT USE spriteBatch.Begin() or .End(); THEY ARE NOT REQUIRED.
                         chunkManager.Draw(spriteBatch, m_camera);
+                        //DO NOT USE spriteBatch.Begin() or .End(); THEY ARE NOT REQUIRED.
 
-                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, m_camera.GetViewPortMatrix);
+                        
+                        //TODO insert enemy drawing here
 
-                        spriteBatch.Begin(SpriteSortMode.BackToFront,
-                            BlendState.AlphaBlend,
-                            null,
-                            null,
-                            null,
-                            null,
-                            m_camera.GetViewPortMatrix);
-                        player.Draw(spriteBatch);
-                        spriteBatch.End();
-
-                        spriteBatch.Begin();
                         player.NewDraw(spriteBatch);
                         spriteBatch.End();
 
