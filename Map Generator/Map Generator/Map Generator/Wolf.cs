@@ -7,18 +7,64 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Map_Generator
 {
-    class Wolf
+    class Wolf : Sprite
     {
-        public Vector2 pos;
-        public Rectangle bounds;
-        Texture2D image;
+        public Player target;
 
-        public void Initialize(Vector2 pos, Rectangle bounds, Texture2D image)
+        int senseRange;
+        int attackRange;
+
+        public Wolf(Vector2 position, Rectangle boundingBox, Texture2D animationSheet, int width, int height)
         {
-            this.pos = pos;
-            this.bounds = bounds;
-            this.image = image;
+            this.position = position;
+            this.boundingBox = boundingBox;
+            this.animationSheet = animationSheet;
+            senseRange = 150;
+            attackRange = 10;
+            this.width = width;
+            this.height = height;
+
+            maxHealth = 8;
+            curHealth = 8;
+            attack = 2;
         }
 
+        public void Update(Player player1, Player player2)
+        {
+            if (Vector2.Distance(player1.position, position) < Vector2.Distance(player2.position, position) && Vector2.Distance(player1.position, position) < senseRange)
+            {
+                target = player1;
+                velocity = target.position - position;
+                velocity.Normalize();
+                velocity *= 3;
+            }
+            if (Vector2.Distance(player2.position, position) < Vector2.Distance(player1.position, position) && Vector2.Distance(player2.position, position) < senseRange)
+            {
+                target = player2;
+                velocity = target.position - position;
+                velocity.Normalize();
+                velocity *= 3;
+            }
+            if (Vector2.Distance(target.position, position) < attackRange)
+            {
+                if (Attack(target)) target.curHealth--;
+            }
+        }
+
+        bool Attack(Player target)
+        {
+            velocity = Vector2.Zero;
+            Rectangle attackBox = Rectangle.Empty;
+            if (target.position.X > position.X + width / 2) attackBox = new Rectangle((int)position.X + width / 2, (int)position.Y, 20, height);
+            if (target.position.X < position.X + width / 2) attackBox = new Rectangle((int)position.X + width / 2 - 20, (int)position.Y, 20, height);
+            if (attackBox.Intersects(target.boundingBox))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

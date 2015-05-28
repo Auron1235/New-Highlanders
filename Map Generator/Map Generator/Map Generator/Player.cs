@@ -8,28 +8,36 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Map_Generator
 {
-    class Player
+    class Player : Sprite
     {
-        public Vector2 position;
-        public Vector2 velocity;
-        public Rectangle boundingBox;
-        public Rectangle boundingFootPrint;
-        public Texture2D image;
-        public int health = 10;
         public Vector2 previousPosition;
-        public Vector2 origin;
+
+        public Rectangle boundingFootPrint;
 
         private const float speedMax = 1.9f;
         private const float speedIncrement = 0.25f;
+        public bool attacking;
 
-        public Player(Vector2 position, Texture2D image)
+        public Player(Vector2 position, Texture2D animationSheet, int width, int height)
         {
             this.position = position;
-            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, image.Width, image.Height);
-            this.boundingFootPrint = new Rectangle((int)position.X, (int)position.Y + 10, image.Width, image.Height);
-            this.image = image;
+            this.animationSheet = animationSheet;
+            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width * 2, height * 2);
+            this.boundingFootPrint = new Rectangle((int)position.X, (int)position.Y + 10, width, height);
             velocity = Vector2.Zero;
             origin = new Vector2(boundingBox.X + boundingBox.Width / 2, boundingBox.Y + boundingBox.Height / 2);
+
+            this.width = width;
+            this.height = height;
+
+            maxHealth = 10;
+            curHealth = 10;
+            attack = 2;
+            defense = 2;
+            attacking = false;
+
+            animationType = 2;
+            spriteEffect = SpriteEffects.None;
         }
 
         public void Collisions(List<Rectangle> walls)
@@ -40,7 +48,6 @@ namespace Map_Generator
 
                 //the plus 32's on the two statements below are for tileWidth and tileHeight.
                 //This will need updated if there is time to a refernced value rather than hardcoding.
-
                 if (boundingFootPrint.Intersects(walls[x]))
                 {
                     if (PreviousHitBox.Right <= walls[x].X)
@@ -72,11 +79,10 @@ namespace Map_Generator
                         position.X += velocity.X;
                     }
                 }
-
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera camera)
+        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera camera, List<Wolf> wolves, List<Bear> bears)
         {
             previousPosition = position;
 
@@ -95,7 +101,7 @@ namespace Map_Generator
             //move player
             position += velocity;
 
-            //bounding - ADAM TO COMMENT
+            //bounding boxes position being update each frame 
             boundingBox.X = (int)position.X;
             boundingBox.Y = (int)position.Y;
             boundingFootPrint.X = (int)position.X;
@@ -103,11 +109,82 @@ namespace Map_Generator
 
             //player friction, will slow player to a stop.
             velocity *= 0.89f;
+
+            if (curKeyState.IsKeyDown(Keys.D))
+            {
+                animationFrame++;
+                spriteEffect = SpriteEffects.None;
+            }
+            if (curKeyState.IsKeyDown(Keys.A))
+            {
+                animationFrame++;
+                spriteEffect = SpriteEffects.FlipHorizontally;
+            }
+            if (curKeyState.IsKeyDown(Keys.W) || curKeyState.IsKeyDown(Keys.S))
+            {
+                
+                animationFrame++;
+                animationType = 2;
+            }
+
+            if (curKeyState.IsKeyDown(Keys.E) || attacking == true)
+            {
+                Attack(wolves, bears, gameTime);
+            }
+
+            //Updates the animation every frame
+            //animationFrame++;
+            if (animationFrame >= 11)
+            {
+                animationFrame = 0;
+            }
         }
 
-        public void Draw(SpriteBatch spritebatch)
+        public void Attack(List<Wolf> wolves, List<Bear> bears, GameTime gameTime)
         {
-            spritebatch.Draw(image, boundingBox, Color.White);
+            if (attacking == false)
+            {
+                animationFrame = 0;
+            }
+            attacking = true;
+            animationType = 0;
+            if (attacking == true)
+            {
+                animationFrame++;
+            }
+            if (animationFrame >= 11)
+            {
+                velocity *= 0.8f;
+                Rectangle attackBox = new Rectangle((int)position.X + width / 2, (int)position.Y, 20, height);
+                for (int i = 0; i < wolves.Count; i++)
+                {
+                    if (wolves[i].boundingBox.Intersects(boundingBox))
+                    {
+                        wolves[i].curHealth--;
+                    }
+                }
+                for (int i = 0; i < bears.Count; i++)
+                {
+                    if (bears[i].boundingBox.Intersects(boundingBox))
+                    {
+                        bears[i].curHealth--;
+                    }
+                }
+                animationType = 2;
+                attacking = false;
+            }
+        }
+
+        public void NewDraw(SpriteBatch spritebatch)
+        {
+            if (animationType == 0)
+            {
+                spritebatch.Draw(animationSheet, boundingBox, new Rectangle(width * animationFrame, height * animationType, width, height), Color.White, 0.0f, new Vector2(0, 0), spriteEffect, 0.0f);
+            }
+            else
+            {
+                spritebatch.Draw(animationSheet, boundingBox, new Rectangle(width * animationFrame, (height * animationType) - 5, width, height - 7), Color.White, 0.0f, new Vector2(0, 0), spriteEffect, 0.0f);
+            }
         }
     }
 }

@@ -15,17 +15,25 @@ namespace Map_Generator
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont smallFont;
         Random rand;
+        bool debugToggle = true;
 
-        Texture2D spriteSheet;
-        List<Chunks> chunks;
+        enum Screens { splashScreen, menuScreen, gamesettingsScreen, menusettingsScreen, playerScreen, gameplayScreen, pauseScreen, completeScreen, gameoverScreen };
+        Screens currentScreen = new Screens();
 
         Camera camera;
         int screenWidth = 1024;
         int screenHeight = 768;
 
+        List<Wolf> wolves = new List<Wolf>();
+        List<Bear> bears = new List<Bear>();
+
         Player player;
-        Texture2D playerPic;
+        KeyboardState oldKState;
+        KeyboardState newKState;
+        GamePadState oldPadState;
+        GamePadState newPadState;
 
         public Game1()
         {
@@ -36,53 +44,16 @@ namespace Map_Generator
         protected override void Initialize()
         {
             rand = new Random();
-            spriteSheet = Content.Load<Texture2D>("SpriteSheet");
+            smallFont = Content.Load<SpriteFont>("smallFont");
 
             camera = new Camera();
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
-            chunks = new List<Chunks>();
-
-            playerPic = Content.Load<Texture2D>("playerPic");
-            player = new Player(new Vector2(screenWidth/2, screenHeight/2), playerPic);
-
-            chunks.Add(new Chunks());
-            chunks[0].Initialize(spriteSheet, new Vector2(0, 0));
-            chunks[0].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[1].Initialize(spriteSheet, new Vector2(-640, -640));
-            chunks[1].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[2].Initialize(spriteSheet, new Vector2(0, -640));
-            chunks[2].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[3].Initialize(spriteSheet, new Vector2(640, -640));
-            chunks[3].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[4].Initialize(spriteSheet, new Vector2(-640, 0));
-            chunks[4].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[5].Initialize(spriteSheet, new Vector2(640, 0));
-            chunks[5].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[6].Initialize(spriteSheet, new Vector2(-640, 640));
-            chunks[6].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[7].Initialize(spriteSheet, new Vector2(0, 640));
-            chunks[7].playerPresent = true;
-
-            chunks.Add(new Chunks());
-            chunks[8].Initialize(spriteSheet, new Vector2(640, 640));
-            chunks[8].playerPresent = true;
+            player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), Content.Load<Texture2D>("playerSheet"), 21, 32);
+            oldKState = Keyboard.GetState();
+            oldPadState = GamePad.GetState(PlayerIndex.One);
 
             base.Initialize();
         }
@@ -98,31 +69,359 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
-            player.Update(gameTime, Keyboard.GetState());
-            for (int i = 0; i < chunks.Count; i++)
-            {
-                player.Collisions(chunks[i].wallTiles);
-            }
+            newKState = Keyboard.GetState();
+            newPadState = GamePad.GetState(PlayerIndex.One);
 
-            camera.Move(-player.velocity);
+            //Toggles the debug controls
+            if (newKState.IsKeyDown(Keys.F1) && !oldKState.IsKeyDown(Keys.F1)) debugToggle = !debugToggle;
+
+            switch (currentScreen)
+            {
+                case Screens.splashScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed)   currentScreen = Screens.menuScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) currentScreen = Screens.menuScreen;
+                        }
+                        
+                        break;
+                    }
+                case Screens.menuScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.playerScreen;
+                        if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) currentScreen = Screens.menusettingsScreen;
+                        if (newPadState.Buttons.Back == ButtonState.Pressed && oldPadState.Buttons.Back != ButtonState.Pressed) this.Exit();
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) currentScreen = Screens.playerScreen;
+                            if (newKState.IsKeyDown(Keys.R) && !oldKState.IsKeyDown(Keys.R)) currentScreen = Screens.menusettingsScreen;
+                            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) this.Exit();
+                        }
+
+                        break;
+                    }
+                case Screens.playerScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.gameplayScreen;
+                        if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.menuScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) currentScreen = Screens.gameplayScreen;
+                            if (newKState.IsKeyDown(Keys.Q) && !oldKState.IsKeyDown(Keys.Q)) currentScreen = Screens.menuScreen;
+                        }
+
+                        break;
+                    }
+                case Screens.pauseScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.gameplayScreen;
+                        if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) currentScreen = Screens.gamesettingsScreen;
+                        if (newPadState.Buttons.Back == ButtonState.Pressed && oldPadState.Buttons.Back != ButtonState.Pressed) this.Exit();
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.Q) && !oldKState.IsKeyDown(Keys.Q)) currentScreen = Screens.gameplayScreen;
+                            if (newKState.IsKeyDown(Keys.R) && !oldKState.IsKeyDown(Keys.R)) currentScreen = Screens.gamesettingsScreen;
+                            if (newKState.IsKeyDown(Keys.Escape) && !oldKState.IsKeyDown(Keys.Escape)) this.Exit();
+                        }
+
+                        break;
+                    }
+                case Screens.gameplayScreen:
+                    {
+                        player.Update(gameTime ,Keyboard.GetState() ,camera, wolves, bears);
+
+                        //Normal control info
+                        if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
+
+                        //DebugToggle control info
+                        if (newKState.IsKeyDown(Keys.Space) && !oldKState.IsKeyDown(Keys.Space)) currentScreen = Screens.pauseScreen;
+
+                        break;
+                    }
+                case Screens.completeScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.menuScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) currentScreen = Screens.menuScreen;
+                        }
+
+                        break;
+                    }
+                case Screens.gameoverScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.menuScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) currentScreen = Screens.menuScreen;
+                        }
+
+                        break;
+                    }
+                case Screens.gamesettingsScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
+                        if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
+                        if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) { }   //Volume down
+                            if (newKState.IsKeyDown(Keys.R) && !oldKState.IsKeyDown(Keys.R)) { }   //Volume up
+                            if (newKState.IsKeyDown(Keys.Q) && !oldKState.IsKeyDown(Keys.Q)) currentScreen = Screens.pauseScreen;
+                        }
+
+                        break;
+                    }
+                case Screens.menusettingsScreen:
+                    {
+                        //Normal Controls
+                        if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
+                        if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
+                        if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.menuScreen;
+
+                        //DebugToggle Controls
+                        if (debugToggle)
+                        {
+                            if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) { }   //Volume down
+                            if (newKState.IsKeyDown(Keys.R) && !oldKState.IsKeyDown(Keys.R)) { }   //Volume up
+                            if (newKState.IsKeyDown(Keys.Q) && !oldKState.IsKeyDown(Keys.Q)) currentScreen = Screens.menuScreen;
+                        }
+
+                        break;
+                    }
+            }
+            oldKState = newKState;
+            oldPadState = newPadState;
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin(0, null, null, null, null, null, camera.getTransformation());
-            foreach (Chunks chunk in chunks)
+            switch (currentScreen)
             {
-                chunk.Draw(spriteBatch);
+                case Screens.splashScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        spriteBatch.Begin();
+                        spriteBatch.DrawString(smallFont, "Image goes here", new Vector2(400, 200), Color.White);
+                        spriteBatch.DrawString(smallFont, "for splash", new Vector2(400, 230), Color.White);
+                        spriteBatch.End();
+
+                        break;
+                    }
+                case Screens.menuScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "The Highlanders", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press E - Play", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press R - Settings", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Esc - Exit", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "The Highlanders", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press A - Play", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Y - Settings", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Back - Exit", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.playerScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Player 1 Image", new Vector2(200, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Player 2 Image", new Vector2(600, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Q - Return", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Player 1 Image", new Vector2(200, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Player 2 Image", new Vector2(600, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press B - Return", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.pauseScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Paused", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Q - Resume", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press R - Settings", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Escape - Exit Game", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Paused", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press B - Resume", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Y - Settings", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Back - Exit Game", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.gameplayScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        spriteBatch.Begin();
+                        player.NewDraw(spriteBatch);
+                        spriteBatch.End();
+
+                        break;
+                    }
+                case Screens.completeScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "You Win", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press E - Continue", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "You Win", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press A - Continue", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.gameoverScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "You Lose", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press E - Continue", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "You Lose", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press A - Continue", new Vector2(400, 600), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.gamesettingsScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Settings", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press E - Volume +", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press R - Volume -", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Q - Return", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Settings", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press A - Volume +", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Y - Volume -", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press B - Return", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
+                case Screens.menusettingsScreen:
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        if (debugToggle)
+                        {
+                            //Debug control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Settings", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press E - Volume +", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press R - Volume -", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Q - Return", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+                        else
+                        {
+                            //Normal control info
+                            spriteBatch.Begin();
+                            spriteBatch.DrawString(smallFont, "Settings", new Vector2(400, 200), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press A - Volume +", new Vector2(400, 400), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press Y - Volume -", new Vector2(400, 450), Color.White);
+                            spriteBatch.DrawString(smallFont, "Press B - Return", new Vector2(400, 500), Color.White);
+                            spriteBatch.End();
+                        }
+
+                        break;
+                    }
             }
-            spriteBatch.End();
-
-            spriteBatch.Begin();
-            player.Draw(spriteBatch);
-            spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }

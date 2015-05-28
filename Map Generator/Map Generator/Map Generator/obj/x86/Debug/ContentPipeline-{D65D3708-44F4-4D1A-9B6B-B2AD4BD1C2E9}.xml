@@ -2,22 +2,22 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
-      <Source>SpriteSheet.png</Source>
-      <Name>SpriteSheet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+      <Source>smallFont.spritefont</Source>
+      <Name>smallFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb</Output>
-      <Time>2015-05-19T13:27:39.6177974+01:00</Time>
+      <Output>S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\smallFont.xnb</Output>
+      <Time>2015-05-25T06:59:42+01:00</Time>
     </Item>
     <Item>
-      <Source>playerPic.png</Source>
-      <Name>playerPic</Name>
+      <Source>playerSheet.png</Source>
+      <Name>playerSheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb</Output>
-      <Time>2015-05-19T13:27:39.6802006+01:00</Time>
+      <Output>S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerSheet.xnb</Output>
+      <Time>2015-05-27T13:57:31.1643806+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

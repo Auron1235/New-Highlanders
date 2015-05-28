@@ -6,8 +6,6 @@ s:\documents\visual studio 2010\Projects\Map Generator\Map Generator\Map Generat
 s:\documents\visual studio 2010\Projects\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
 s:\documents\visual studio 2010\Projects\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
 S:\Documents\Visual Studio 2010\Projects\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb
-S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb
-S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb
 S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.exe
 S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.pdb
 S:\Documents\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.csprojResolveAssemblyReference.cache
@@ -22,3 +20,23 @@ C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Ge
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.csprojResolveAssemblyReference.cache
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\SpriteSheet.xnb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerPic.xnb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\smallFont.xnb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.exe
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.pdb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
+C:\Users\adam\Desktop\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerSheet.xnb
+S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\smallFont.xnb
+S:\Documents\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\playerSheet.xnb
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\bin\x86\Debug\Content\smallFont.xnb
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\bin\x86\Debug\Content\playerSheet.xnb
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\bin\x86\Debug\Map Generator.exe
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\bin\x86\Debug\Map Generator.pdb
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\obj\x86\Debug\Map Generator.csprojResolveAssemblyReference.cache
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
+C:\Users\Windows\Google Drive\College\Group Project\Gary\Map Generator (1)\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb

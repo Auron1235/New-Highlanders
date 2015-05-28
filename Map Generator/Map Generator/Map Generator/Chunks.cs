@@ -11,6 +11,7 @@ namespace Map_Generator
     {
         Random rand;
         public Vector2 chunkPos;
+
         public List<Rectangle> grassTiles;
         public List<Rectangle> wallTiles;
         List<Rectangle> grassImages;
@@ -24,7 +25,7 @@ namespace Map_Generator
         int width = 20;
         int height = 20;
 
-        public void Initialize(Texture2D image, Vector2 pos)
+        public Chunks(Texture2D image, Vector2 pos)
         {
             rand = new Random();
             chunkPos = pos;

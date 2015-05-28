@@ -14,8 +14,8 @@ namespace Map_Generator
         private int mSeed;
         private Texture2D mSpriteSheet;
 
-        private const int ChunkDimensions = 64;
-        private const int TileDimensions = 32;
+        private const int ChunkDimensions = 64; //DEBUG set to 64 for final game, 16 for DEBUG
+        private const int TileDimensions = 32; //DEBUG set to 32 for final game, 8 for DEBUG
         private const int LoadedArea = 5;
 
         private Vector2 mCurFocusChunk;
@@ -79,7 +79,6 @@ namespace Map_Generator
             }
         }
 
-
         private void CreateChunk(Vector2 chunkPosition)
         {
             CreateChunk((int)chunkPosition.X, (int)chunkPosition.Y);
@@ -90,7 +89,6 @@ namespace Map_Generator
             int chunkID = GenerateChunkID(chunkSeed, x, y);
 
             Chunk chunk = new Chunk(chunkID, new Vector2(x, y), ChunkDimensions, TileDimensions, mSpriteSheet);
-            //if (x == 3 && y == 3) chunk.PlayerSpawn = true;
             mChunks.Add(chunk);
         }
 
@@ -108,139 +106,50 @@ namespace Map_Generator
 
             if (mCurFocusChunk != mPrevFocusChunk)
             {
-                Vector2 direction = mPrevFocusChunk - mCurFocusChunk;
-                Vector2 dirX = new Vector2(direction.X, 0);
-                Vector2 dirY = new Vector2(0, direction.Y);
-
-                //if (dirX.X != 0) LoadUnloadChunks(dirX, mCurFocusChunk);
-                //if (dirY.Y != 0) LoadUnloadChunks(dirY, mCurFocusChunk);
-
-                if (dirX.X != 0) LoadUnloadChunksX(direction, mCurFocusChunk);
-                if (dirY.Y != 0) LoadUnloadChunksY(direction, mCurFocusChunk);
+                //calcuates movement direction then updates X then Y chunks.
+                Vector2 direction = mCurFocusChunk - mPrevFocusChunk;
+                if (direction.X != 0) LoadUnloadChunksX(direction, mCurFocusChunk);
+                if (direction.Y != 0) LoadUnloadChunksY(direction, mCurFocusChunk);
 
             }
 
             mPrevFocusChunk = mCurFocusChunk;
         }
 
-        //public void LoadUnloadChunks(Vector2 direction, Vector2 mCurFocusChunk)
-        //{
-        //    // extends our direction Vector to be the row/column from source that we will load/unload.
-        //    Vector2 loadDir = direction * 3;
-        //    Vector2 unloadDir = direction * -3;
-
-        //    //loads chunks
-        //    for (int i = 0; i < LoadedArea; i++)
-        //    {
-        //        Vector2 loadingPos = mCurFocusChunk + direction;
-        //        CreateChunk(loadingPos);
-        //    }
-
-        //    //unloads chunks
-        //    //for (int i = mChunks.Count - 1; i >= 0; i--)
-        //    //{
-        //    //    if ((mChunks[i].ChunkPos.X == mCurFocusChunk.X + 2)
-        //    //        || (mChunks[i].ChunkPos.X == mCurFocusChunk.X - 2)
-        //    //            || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2)
-        //    //                || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2))
-        //    //    {
-
-        //    //        mChunks.RemoveAt(i);
-        //    //    }
-
-        //    //}
-
-
-        //    //foreach (Chunk chunk in mChunks)
-        //    //{
-        //    //    //if 
-        //    //}
-
-
-        //}
-
         public void LoadUnloadChunksX(Vector2 direction, Vector2 mCurFocusChunk)
         {
-            // extends our direction Vector to be the row/column from source that we will load/unload.
-            Vector2 loadDir = direction * 3;
-            Vector2 unloadDir = direction * -3;
-
             //loads chunks
             for (int y = 0; y < LoadedArea; y++)
             {
-                //Vector2 loadingPos = mCurFocusChunk + direction;
-                //CreateChunk(loadingPos);
-                CreateChunk(new Vector2(mCurFocusChunk.X + loadDir.X, (mCurFocusChunk.Y - 2) + y));
+                CreateChunk(new Vector2(mCurFocusChunk.X + (direction.X * 2), (mCurFocusChunk.Y - 2) + y));
             }
-
-            ///unloads chunks
+            //unloads chunks
             for (int i = mChunks.Count - 1; i >= 0; i--)
             {
-                if (mChunks[i].ChunkPos.X == mCurFocusChunk.X + 3)
+                if ((mChunks[i].ChunkPos.X == mCurFocusChunk.X + (direction.X * 3))
+                    || (mChunks[i].ChunkPos.X == mCurFocusChunk.X - (direction.X * 3)))
                 {
                     mChunks.RemoveAt(i);
                 }
-                //if (mChunks[i].ChunkPos.X == mCurFocusChunk.X - 3)
-                //{
-                //    mChunks.RemoveAt(i);
-                //}
-
             }
-
-            int test = 0;
-
-
-            //unloads chunks
-            //for (int i = mChunks.Count - 1; i >= 0; i--)
-            //{
-            //    if ((mChunks[i].ChunkPos.X == mCurFocusChunk.X + 2)
-            //        || (mChunks[i].ChunkPos.X == mCurFocusChunk.X - 2)
-            //            || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2)
-            //                || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2))
-            //    {
-
-            //        mChunks.RemoveAt(i);
-            //    }
-
-            //}
         }
 
         public void LoadUnloadChunksY(Vector2 direction, Vector2 mCurFocusChunk)
         {
-            // extends our direction Vector to be the row/column from source that we will load/unload.
-            Vector2 loadDir = direction * 3;
-            Vector2 unloadDir = direction * -3;
-
             //loads chunks
             for (int x = 0; x < LoadedArea; x++)
             {
-                //Vector2 loadingPos = mCurFocusChunk + direction;
-                //CreateChunk(loadingPos);
-                CreateChunk(new Vector2(((mCurFocusChunk.X - 2) + x), mCurFocusChunk.Y + loadDir.Y));
+                CreateChunk(new Vector2((mCurFocusChunk.X - 2) + x, mCurFocusChunk.Y + (direction.Y * 2)));
             }
-
-            ///unloads chunks
+            //unloads chunks
             for (int i = mChunks.Count - 1; i >= 0; i--)
             {
-                if (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + unloadDir.Y) mChunks.RemoveAt(i);
+                if ((mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + (direction.Y * 3))
+                    || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y - (direction.Y * 3)))
+                {
+                    mChunks.RemoveAt(i);
+                }
             }
-
-
-
-
-            //unloads chunks
-            //for (int i = mChunks.Count - 1; i >= 0; i--)
-            //{
-            //    if ((mChunks[i].ChunkPos.X == mCurFocusChunk.X + 2)
-            //        || (mChunks[i].ChunkPos.X == mCurFocusChunk.X - 2)
-            //            || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2)
-            //                || (mChunks[i].ChunkPos.Y == mCurFocusChunk.Y + 2))
-            //    {
-
-            //        mChunks.RemoveAt(i);
-            //    }
-
-            //}
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera2D camera2D)
@@ -267,7 +176,7 @@ namespace Map_Generator
         }
         public Vector2 FindChunkCentre(Vector2 chunkPos)
         {
-            Vector2 desiredCentre = new Vector2(chunkPos.X + 1, chunkPos.Y + 1);
+            Vector2 desiredCentre = new Vector2(chunkPos.X + 0.5f, chunkPos.Y + 0.5f);
             return desiredCentre * ChunkDimensions * TileDimensions;
         }
     }
