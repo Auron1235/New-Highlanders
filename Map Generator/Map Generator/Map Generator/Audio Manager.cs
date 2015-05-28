@@ -14,17 +14,31 @@ namespace Map_Generator
         private float mSfxVolume;
         private float mMusicVolume;
 
-        private const float mDefaultSfxVolume = 0.6f;
-        private const float mDefaultMusicVolume = 0.6f;
+        private const float mDefaultSfxVolume = 0.3f;
+        private const float mDefaultMusicVolume = 0.8f;
 
         private List<SoundEffect> mMusicTracks;
         private SoundEffectInstance mCurrentMusic;
 
-        private SoundEffect Theme;
-        private SoundEffect BattleHunger;
-        private SoundEffect GoFourth;
-        private SoundEffect TheGloomyMorning;
-        private SoundEffect TheRoyalKingdom;
+        private List<SoundEffect> FootSteps = new List<SoundEffect>();
+        private List<SoundEffect> HitSounds = new List<SoundEffect>();
+        private List<SoundEffect> SwooshSounds = new List<SoundEffect>();
+        private List<SoundEffect> DropSounds = new List<SoundEffect>();
+        private List<SoundEffect> WolfSounds = new List<SoundEffect>();
+        private List<SoundEffect> BearSounds = new List<SoundEffect>();
+
+        private SoundEffect MenuBack;
+        private SoundEffect MenuSelect;
+
+
+
+
+
+
+
+
+
+
         #endregion
 
         #region GET SETS
@@ -48,6 +62,46 @@ namespace Map_Generator
             get { return mMusicTracks; }
             //set { mMusicTracks = value; }
         }
+        public List<SoundEffect> mFootSteps
+        {
+            get { return FootSteps; }
+            //set { FootSteps = value; }
+        }
+        public List<SoundEffect> mHitSounds
+        {
+            get { return HitSounds; }
+            //set { HitSounds = value; }
+        }
+        public List<SoundEffect> mSwooshSounds
+        {
+            get { return SwooshSounds; }
+            //set { SwooshSounds = value; }
+        }
+        public List<SoundEffect> mDropSounds
+        {
+            get { return DropSounds; }
+            //set { DropSounds = value; }
+        }
+        public SoundEffect mMenuBack
+        {
+            get { return MenuBack; }
+            set { MenuBack = value; }
+        }
+        public SoundEffect mMenuSelect
+        {
+            get { return MenuSelect; }
+            set { MenuSelect = value; }
+        }
+        public List<SoundEffect> mWolfSounds
+        {
+            get { return WolfSounds; }
+            //set { WolfSounds = value; }
+        }
+        public List<SoundEffect> mBearSounds
+        {
+            get { return BearSounds; }
+            //set { BearSounds = value; }
+        }
         #endregion
 
         //CONSTRUCTOR
@@ -70,17 +124,55 @@ namespace Map_Generator
 
         public void AudioLoadContent(ContentManager Content)
         {
-            Theme = Content.Load<SoundEffect>("Music/Theme");
-            BattleHunger = Content.Load<SoundEffect>("Music/BattleHunger");
-            GoFourth = Content.Load<SoundEffect>("Music/GoFourth");
-            TheGloomyMorning = Content.Load<SoundEffect>("Music/TheGloomyMorning");
-            TheRoyalKingdom = Content.Load<SoundEffect>("Music/TheRoyalKingdom");
 
-            mMusicTracks.Add(Theme);
-            mMusicTracks.Add(BattleHunger);
-            mMusicTracks.Add(GoFourth);
-            mMusicTracks.Add(TheGloomyMorning);
-            mMusicTracks.Add(TheRoyalKingdom);
+            //Music
+            mMusicTracks.Add(Content.Load<SoundEffect>("Music/Theme"));
+            mMusicTracks.Add(Content.Load<SoundEffect>("Music/BattleHunger"));
+            mMusicTracks.Add(Content.Load<SoundEffect>("Music/GoFourth"));
+            mMusicTracks.Add(Content.Load<SoundEffect>("Music/TheGloomyMorning"));
+            mMusicTracks.Add(Content.Load<SoundEffect>("Music/TheRoyalKingdom"));
+            //Sound effects - footsteps
+            for (int i = 0; i < 9; i++)
+            {
+                FootSteps.Add(Content.Load<SoundEffect>("Sound Effects/Footsteps/footstep" + i.ToString()));
+            }
+            //sound effects - hitsounds
+            for (int i = 0; i < 35; i++)
+            {
+                HitSounds.Add(Content.Load<SoundEffect>("Sound Effects/HitSounds/hit" + i.ToString()));
+            }
+            //Sound effects - Swoosh
+            for (int i = 0; i < 25; i++)
+            {
+                SwooshSounds.Add(Content.Load<SoundEffect>("Sound Effects/Swoosh/swosh-" + i.ToString()));
+            }
+            //Item Drop Sounds
+            mDropSounds.Add(Content.Load<SoundEffect>("Sound Effects/Ui and Drops/bubble1"));
+            mDropSounds.Add(Content.Load<SoundEffect>("Sound Effects/Ui and Drops/bubble2"));
+            mDropSounds.Add(Content.Load<SoundEffect>("Sound Effects/Ui and Drops/itemPickUp"));
+            mDropSounds.Add(Content.Load<SoundEffect>("Sound Effects/Ui and Drops/shieldDrop"));
+            mDropSounds.Add(Content.Load<SoundEffect>("Sound Effects/Ui and Drops/swordDrop"));
+
+            //Ui Sounds
+            mMenuBack = Content.Load<SoundEffect>("Sound Effects/Ui and Drops/menuBack");
+            mMenuSelect = Content.Load<SoundEffect>("Sound Effects/Ui and Drops/menuSelect");
+
+            //Wolf Sounds
+            for (int i = 0; i < 5; i++)
+            {
+                mWolfSounds.Add(Content.Load<SoundEffect>("Sound Effects/WolfSounds/Growl" + i.ToString()));
+            }
+            mWolfSounds.Add(Content.Load<SoundEffect>("Sound Effects/WolfSounds/Howl"));
+            mWolfSounds.Add(Content.Load<SoundEffect>("Sound Effects/WolfSounds/Whine"));
+
+            //Bear Sounds
+            for (int i = 0; i < 3; i++)
+            {
+                mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearGrowl" + i.ToString()));
+            }
+
+            mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearHowl"));
+            mBearSounds.Add(Content.Load<SoundEffect>("Sound Effects/BearSounds/BearWhine"));
         }
 
         public void PlaySfx(SoundEffect soundEffect)
