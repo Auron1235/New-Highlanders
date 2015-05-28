@@ -22,13 +22,14 @@ namespace Map_Generator
         enum Screens { splashScreen, menuScreen, gamesettingsScreen, menusettingsScreen, playerScreen, gameplayScreen, pauseScreen, completeScreen, gameoverScreen };
         Screens currentScreen = new Screens();
 
-        //Camera camera;
+        Camera2D m_camera;
         int screenWidth = 1024;
         int screenHeight = 768;
 
         AudioManager audioManager;
         ChunkManager chunkManager;
-        Camera2D m_camera;
+
+        Texture2D spriteSheet;
 
         List<Wolf> wolves = new List<Wolf>();
         List<Bear> bears = new List<Bear>();
@@ -47,6 +48,8 @@ namespace Map_Generator
 
         protected override void Initialize()
         {
+            spriteSheet = Content.Load<Texture2D>("SpriteSheet");
+
             rand = new Random();
             smallFont = Content.Load<SpriteFont>("smallFont");
 
@@ -55,7 +58,15 @@ namespace Map_Generator
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
+            audioManager = new AudioManager();
+            audioManager.Initialize(Content);
+
+            chunkManager = new ChunkManager();
+            chunkManager.Initialize(499, spriteSheet); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
+
             player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), Content.Load<Texture2D>("playerSheet"), 21, 32);
+            //DEBUG - sets player position to centre chunk position
+            player.position = chunkManager.FindChunkCentre(new Vector2(2, 2));
             oldKState = Keyboard.GetState();
             oldPadState = GamePad.GetState(PlayerIndex.One);
 
@@ -77,7 +88,7 @@ namespace Map_Generator
             newPadState = GamePad.GetState(PlayerIndex.One);
 
             //Toggles the debug controls
-            if (newKState.IsKeyDown(Keys.F1) && !oldKState.IsKeyDown(Keys.F1)) debugToggle = !debugToggle;
+            if (newKState.IsKeyDown(Keys.F1) && oldKState.IsKeyUp(Keys.F1)) debugToggle = !debugToggle;
 
             switch (currentScreen)
             {
@@ -113,9 +124,6 @@ namespace Map_Generator
                     }
                 case Screens.playerScreen:
                     {
-                        //DEBUG causes camera to follow the player, change to the midpoint between players when 2player implemented
-                        m_camera.Target = player.position;
-
                         //Normal Controls
                         if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.gameplayScreen;
                         if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.menuScreen;
@@ -148,7 +156,17 @@ namespace Map_Generator
                     }
                 case Screens.gameplayScreen:
                     {
-                        player.Update(gameTime ,Keyboard.GetState() , m_camera, wolves, bears);
+                        //DEBUG causes camera to follow the player, change to the midpoint between players when 2player implemented
+                        m_camera.Target = player.position;
+
+                        player.Update(gameTime, Keyboard.GetState(), m_camera, wolves, bears);
+
+                        //updates the chunks using the cameraTarget
+                        chunkManager.Update(m_camera.Target);
+
+                        //DEBUG TEXT
+                        Console.WriteLine("Player pos: " + player.position);
+                        Console.WriteLine("chunks" + chunkManager.Chunks.Count);
 
                         //Normal control info
                         if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
@@ -156,6 +174,9 @@ namespace Map_Generator
                         //DebugToggle control info
                         if (newKState.IsKeyDown(Keys.Space) && !oldKState.IsKeyDown(Keys.Space)) currentScreen = Screens.pauseScreen;
 
+
+                        //updates camera viewport position for the coming draw call
+                        m_camera.UpdateViewPort(new Vector2(0, 0));
                         break;
                     }
                 case Screens.completeScreen:
@@ -348,6 +369,29 @@ namespace Map_Generator
                 case Screens.gameplayScreen:
                     {
                         GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                        spriteBatch.Begin(SpriteSortMode.BackToFront,
+                            BlendState.AlphaBlend,
+                            null,
+                            null,
+                            null,
+                            null,
+                            m_camera.GetViewPortMatrix);
+
+                        //draws the chunks etc and only draws what it on the screen using the camera Viewport
+                        chunkManager.Draw(spriteBatch, m_camera);
+
+                        spriteBatch.End();
+
+                        spriteBatch.Begin(SpriteSortMode.BackToFront,
+                            BlendState.AlphaBlend,
+                            null,
+                            null,
+                            null,
+                            null,
+                            m_camera.GetViewPortMatrix);
+                        player.Draw(spriteBatch);
+                        spriteBatch.End();
 
                         spriteBatch.Begin();
                         player.NewDraw(spriteBatch);

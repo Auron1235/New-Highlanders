@@ -30,15 +30,6 @@ namespace Map_Generator
         private SoundEffect MenuBack;
         private SoundEffect MenuSelect;
 
-
-
-
-
-
-
-
-
-
         #endregion
 
         #region GET SETS
