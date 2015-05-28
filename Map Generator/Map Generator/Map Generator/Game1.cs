@@ -22,9 +22,13 @@ namespace Map_Generator
         enum Screens { splashScreen, menuScreen, gamesettingsScreen, menusettingsScreen, playerScreen, gameplayScreen, pauseScreen, completeScreen, gameoverScreen };
         Screens currentScreen = new Screens();
 
-        Camera camera;
+        //Camera camera;
         int screenWidth = 1024;
         int screenHeight = 768;
+
+        AudioManager audioManager;
+        ChunkManager chunkManager;
+        Camera2D m_camera;
 
         List<Wolf> wolves = new List<Wolf>();
         List<Bear> bears = new List<Bear>();
@@ -46,7 +50,7 @@ namespace Map_Generator
             rand = new Random();
             smallFont = Content.Load<SpriteFont>("smallFont");
 
-            camera = new Camera();
+            m_camera = new Camera2D(0, 0, screenWidth, screenHeight);
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
@@ -109,6 +113,9 @@ namespace Map_Generator
                     }
                 case Screens.playerScreen:
                     {
+                        //DEBUG causes camera to follow the player, change to the midpoint between players when 2player implemented
+                        m_camera.Target = player.position;
+
                         //Normal Controls
                         if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) currentScreen = Screens.gameplayScreen;
                         if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) currentScreen = Screens.menuScreen;
@@ -141,7 +148,7 @@ namespace Map_Generator
                     }
                 case Screens.gameplayScreen:
                     {
-                        player.Update(gameTime ,Keyboard.GetState() ,camera, wolves, bears);
+                        player.Update(gameTime ,Keyboard.GetState() , m_camera, wolves, bears);
 
                         //Normal control info
                         if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) currentScreen = Screens.pauseScreen;
@@ -221,6 +228,33 @@ namespace Map_Generator
         {
             switch (currentScreen)
             {
+                    //DEBUG new camera code, may need to be integrated into each screen individually.
+                    //spriteBatch.Begin(SpriteSortMode.BackToFront,
+                    //    BlendState.AlphaBlend,
+                    //    null,
+                    //    null,
+                    //    null,
+                    //    null,
+                    //    m_camera.GetViewPortMatrix);
+
+                    //DRAW CODE GOES HERE - My sample debug text pasted for reference..
+                    //spriteBatch.DrawString(debugFont,
+                    //    chunkManager.GetChunkCoordinate(player.position).ToString(),
+                    //    new Vector2(player.position.X, player.position.Y + 20),
+                    //    Color.White);
+                    //spriteBatch.DrawString(debugFont,
+                    //    player.position.ToString(),
+                    //    new Vector2(player.position.X, player.position.Y + 40),
+                    //    Color.White);
+                    //spriteBatch.DrawString(
+                    //    debugFont,
+                    //    "Chunk Count: " + chunkManager.Chunks.Count,
+                    //    new Vector2(player.position.X, player.position.Y + 60),
+                    //    Color.White);
+
+                    //end as normal
+                    //spriteBatch.End();
+
                 case Screens.splashScreen:
                     {
                         GraphicsDevice.Clear(Color.CornflowerBlue);

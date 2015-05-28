@@ -82,7 +82,7 @@ namespace Map_Generator
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera camera, List<Wolf> wolves, List<Bear> bears)
+        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera2D camera, List<Wolf> wolves, List<Bear> bears)
         {
             previousPosition = position;
 
