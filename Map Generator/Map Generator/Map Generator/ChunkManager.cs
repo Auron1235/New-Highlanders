@@ -154,17 +154,39 @@ namespace Map_Generator
 
         public void Draw(SpriteBatch spriteBatch, Camera2D camera2D)
         {
+            //draws ground
             foreach (Chunk chunk in mChunks)
             {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
                 chunk.DrawGround(spriteBatch, camera2D);
                 spriteBatch.End();
             }
+            //draws obstacles
+            //foreach (Chunk chunk in mChunks)
+            //{
+            //    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
+            //    chunk.DrawObstacles(spriteBatch, camera2D);
+            //    spriteBatch.End();
+            //}
 
+            List<Obstacle> viewableObstacles = new List<Obstacle>();
             foreach (Chunk chunk in mChunks)
             {
-                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
-                chunk.DrawObstacles(spriteBatch, camera2D);
+                foreach (Obstacle obs in chunk.Obstacles)
+                {
+                    if (camera2D.ObjectIsVisible(obs.Bounds))
+                    {
+                        viewableObstacles.Add(obs);
+                    }
+                }
+            }
+            List<Obstacle> sortedObstacles = new List<Obstacle>();
+            sortedObstacles = viewableObstacles.OrderBy(x => x.Bounds.Bottom).ThenBy(x => x.Bounds.X).ToList();
+
+            for (int i = 0; i < sortedObstacles.Count; i++)
+            {
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
+                spriteBatch.Draw(mSpriteSheet, sortedObstacles[i].Bounds, sortedObstacles[i].Image, Color.White);
                 spriteBatch.End();
             }
 

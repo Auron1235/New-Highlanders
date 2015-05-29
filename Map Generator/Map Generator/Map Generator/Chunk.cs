@@ -17,7 +17,8 @@ namespace Map_Generator
         private List<Rectangle> mTiles;
         private List<Rectangle> mTileImages;
         private List<Vector2> mEnemySpawnLocations;
-        private List<Rectangle> mObstacles;
+        private List<Obstacle> mObstacles;
+        //private List<Rectangle> mObstacles;
         private List<Rectangle> mObstacleImages;
         private List<Rectangle> mObsRectangles;
         private int mObsIslandDensity; // amount of islands of obstacles that appear on a chunk
@@ -64,7 +65,7 @@ namespace Map_Generator
             get { return mTileImages; }
             //set { mTileImages = value; }
         }
-        public List<Rectangle> Obstacles
+        public List<Obstacle> Obstacles
         {
             get { return mObstacles; }
             set { mObstacles = value; }
@@ -115,7 +116,7 @@ namespace Map_Generator
             mTiles = new List<Rectangle>();
             mTileImages = new List<Rectangle>();
 
-            mObstacles = new List<Rectangle>();
+            mObstacles = new List<Obstacle>();
             mObstacleImages = new List<Rectangle>();
             mObsIslandDensity = 10;
             mObsDensity = 50;
@@ -137,8 +138,6 @@ namespace Map_Generator
                     mTiles.Add(new Rectangle(
                         mChunkRectangle.X + (x * mTileDimensions),
                         mChunkRectangle.Y + (y * mTileDimensions),
-                        //((int)mChunkPos.X * ChunkDimensions * mTileDimensions) + (x * mTileDimensions),
-                        //((int)mChunkPos.Y * ChunkDimensions * mTileDimensions) + (y * mTileDimensions),
                         mTileDimensions,
                         mTileDimensions));
                         
@@ -152,27 +151,6 @@ namespace Map_Generator
 
             //Picks random areas to be set as collidables and gives it a random wall pic to use.
             GenerateObsSpawns();
-        }
-
-        public void DrawGround(SpriteBatch spriteBatch, Camera2D camera2D)
-        {
-            for (int i = 0; i < mTiles.Count; i++)
-            {
-                if (camera2D.ObjectIsVisible(mTiles[i]))
-                {
-                    spriteBatch.Draw(mSpriteSheet, mTiles[i], mTileImages[i], Color.White);
-                }
-            }
-        }
-
-        public void DrawObstacles(SpriteBatch spriteBatch, Camera2D Camera2D)
-        {
-            //obstacle drawing
-            for (int i = 0; i < mObstacles.Count; i++)
-            {
-                spriteBatch.Draw(mSpriteSheet, new Vector2(mObstacles[i].X, mObstacles[i].Y), mObstacleImages[i], Color.White);
-                //spriteBatch.Draw(mSpriteSheet, new Vector2(mObstacles[i].X, mObstacles[i].Y), mObstacleImages[i], Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, (float)(mObstacles[i].Y / Camera2D.ViewPortRect.Height));
-            }
         }
 
         public Vector2 ChunkCentre()
@@ -216,34 +194,55 @@ namespace Map_Generator
             }
             //spawnLocations.Sort((X, Y) => (X.Y.CompareTo(Y.Y)));
 
-            //int count = 0;
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    for (int p = 0; p < mSeededRandom.Next(5); p++)
-            //    {
-            //        count++;
-            //        mObstaclesUnsorted.Add(new Rectangle((int)spawnLocations[count].X, (int)spawnLocations[count].Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
-            //        mObstacleImages.Add(new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
-            //        if (count == spawnLocations.Count())
-            //            break;
-            //    }
-            //}
-
             //creates something at each of the spawns.
+            //foreach (Vector2 spawn in spawnLocations)
+            //{
+            //    int i = mSeededRandom.Next(0, 3);
+            //    mObstaclesUnsorted.Add(new Rectangle((int)spawn.X, (int)spawn.Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
+            //    mObstacleImages.Add(new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
+            //}
+            //mObstaclesUnsorted.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom))); // sorts the list against the bottom of thier rectangles for Drawing.
+            //mObstacleImages.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom)));
+            
+            ////List<Rectangle>() a;
+            ////List<Rectangle> b = a.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
+            ////List<Rectangle>() a;
+            //mObstacles = mObstaclesUnsorted.OrderBy(x => x.Right).ThenBy(x => x.Bottom).ToList();
+            //mObstacles.Reverse();
+
             foreach (Vector2 spawn in spawnLocations)
             {
                 int i = mSeededRandom.Next(0, 3);
-                mObstaclesUnsorted.Add(new Rectangle((int)spawn.X, (int)spawn.Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
-                mObstacleImages.Add(new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
+                mObstacles.Add(new Obstacle(
+                    new Rectangle((int)spawn.X, (int)spawn.Y, mObsRectangles[i].Width, mObsRectangles[i].Height),
+                    new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height)));
             }
-            mObstaclesUnsorted.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom))); // sorts the list against the bottom of thier rectangles for Drawing.
-            mObstacleImages.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom)));
-            
-            //List<Rectangle>() a;
-            //List<Rectangle> b = a.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
-            //List<Rectangle>() a;
-            mObstacles = mObstaclesUnsorted.OrderBy(x => x.Right).ThenBy(x => x.Bottom).ToList();
-            mObstacles.Reverse();
+            mObstacles.Sort((X, Y) => (X.Image.Bottom.CompareTo(Y.Image.Bottom)));
+        }
+
+        public void DrawGround(SpriteBatch spriteBatch, Camera2D camera2D)
+        {
+            for (int i = 0; i < mTiles.Count; i++)
+            {
+                if (camera2D.ObjectIsVisible(mTiles[i]))
+                {
+                    spriteBatch.Draw(mSpriteSheet, mTiles[i], mTileImages[i], Color.White);
+                }
+            }
+        }
+
+        public void DrawObstacles(SpriteBatch spriteBatch, Camera2D Camera2D)
+        {
+            //obstacle drawing
+            for (int i = 0; i < mObstacles.Count; i++)
+            {
+                
+                if (Camera2D.ObjectIsVisible(mObstacles[i].Bounds))
+                {
+                spriteBatch.Draw(mSpriteSheet, new Vector2(mObstacles[i].Bounds.X, mObstacles[i].Bounds.Y), mObstacles[i].Image, Color.White);
+                    //spriteBatch.Draw(mSpriteSheet, new Vector2(mObstacles[i].Bounds.X, mObstacles[i].Bounds.Y), mObstacles[i].Image, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, (float)(mObstacles[i].Bounds.Bottom / Camera2D.ViewPortRect.Height));
+                }
+            }
         }
     }
 }
