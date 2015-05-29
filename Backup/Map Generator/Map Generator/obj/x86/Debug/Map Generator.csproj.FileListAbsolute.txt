@@ -22,3 +22,6 @@ C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Ge
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
 C:\Users\adam\Google Drive\Group Project\Adam\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Backup\Map Generator\Map Generator\obj\x86\Debug\Map Generator.csprojResolveAssemblyReference.cache
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Backup\Map Generator\Map Generator\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Alistair\Documents\GitHub\New-Highlanders\Backup\Map Generator\Map Generator\obj\x86\Debug\Map Generator.exe
