@@ -92,6 +92,7 @@ namespace Map_Generator
         {
             screenManager.Update(player, gameTime, m_camera, wolves, bears, chunkManager, audioManager);
 
+            #region OLD GAME 1 UPDATE
             //newKState = Keyboard.GetState();
             //newPadState = GamePad.GetState(PlayerIndex.One);
 
@@ -256,13 +257,15 @@ namespace Map_Generator
             //}
             //oldKState = newKState;
             //oldPadState = newPadState;
-
+            #endregion
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             screenManager.Draw(spriteBatch, smallFont, player, m_camera, chunkManager);
+
+            #region OLD DRAW METHOD
             //switch (currentScreen)
             //{
             //        //DEBUG new camera code, may need to be integrated into each screen individually.
@@ -501,6 +504,7 @@ namespace Map_Generator
             //            break;
             //        }
             //}
+            #endregion
             base.Draw(gameTime);
         }
     }

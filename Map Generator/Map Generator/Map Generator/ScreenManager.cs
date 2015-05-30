@@ -257,13 +257,6 @@ namespace Map_Generator
         private void GamePlayDraw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, ChunkManager chunkManager, Camera2D camera2D)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-            //spriteBatch.Begin(SpriteSortMode.BackToFront,
-            //    BlendState.AlphaBlend,
-            //    null,
-            //    null,
-            //    null,
-            //    null,
-            //    m_camera.GetViewPortMatrix);
 
             //Draw calls are fully managed on Chunk Manager, including necessary overloads to SpriteBatch.
             //DO NOT USE spriteBatch.Begin() or .End(); THEY ARE NOT REQUIRED.
