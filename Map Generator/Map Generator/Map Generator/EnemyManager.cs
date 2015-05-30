@@ -17,9 +17,21 @@ namespace Map_Generator
             set { mEnemies = value; }
         }
 
-        public EnemyManager(Texture2D animationSheet)
+        public EnemyManager()
         {
-            mEnemies = new List<Sprite>();
+
         }
+
+        public void Initialise()
+        {
+
+        }
+
+        public void Update(GameTime gameTime, Player player)
+        {
+
+        }
+
+
     }
 }

@@ -32,6 +32,7 @@ namespace Map_Generator
 
         Texture2D spriteSheet;
 
+        List<Sprite> enemies;
         List<Wolf> wolves = new List<Wolf>();
         List<Bear> bears = new List<Bear>();
 
@@ -75,6 +76,9 @@ namespace Map_Generator
 
             oldKState = Keyboard.GetState();
             oldPadState = GamePad.GetState(PlayerIndex.One);
+
+            //testing enemies
+            enemies = new List<Sprite>();
 
             base.Initialize();
         }

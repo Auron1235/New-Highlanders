@@ -42,7 +42,7 @@ namespace Map_Generator
         //constructor
         public ScreenManager()
         {
-
+            
         }
 
         public void Initialize(ContentManager Content)
@@ -61,7 +61,7 @@ namespace Map_Generator
             oldPadState = GamePad.GetState(PlayerIndex.One);
             oldKState = Keyboard.GetState();
 
-            debugToggle = false;
+            debugToggle = true;
             gameExit = false;
         }
 

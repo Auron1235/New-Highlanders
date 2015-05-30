@@ -17,12 +17,11 @@ namespace Map_Generator
         public Bear(Vector2 position, Rectangle boundingBox, Texture2D animationSheet, int width, int height)
         {
             this.position = position;
-            this.boundingBox = boundingBox;
-            this.animationSheet = animationSheet;
-            senseRange = 100;
-            attackRange = 20;
             this.width = width;
             this.height = height;
+            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
+            senseRange = 100;
+            attackRange = 20;
 
             maxHealth = 20;
             curHealth = 20;

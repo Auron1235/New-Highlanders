@@ -14,15 +14,15 @@ namespace Map_Generator
         int senseRange;
         int attackRange;
 
-        public Wolf(Vector2 position, Rectangle boundingBox, Texture2D animationSheet, int width, int height)
+        public Wolf(Vector2 position, Texture2D animationSheet, int width, int height)
         {
             this.position = position;
-            this.boundingBox = boundingBox;
+            this.width = width;
+            this.height = height;
+            this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             this.animationSheet = animationSheet;
             senseRange = 150;
             attackRange = 10;
-            this.width = width;
-            this.height = height;
 
             maxHealth = 8;
             curHealth = 8;
