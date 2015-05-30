@@ -14,7 +14,7 @@ namespace Map_Generator
         int senseRange;
         int attackRange;
 
-        public Bear(Vector2 position, Rectangle boundingBox, Texture2D animationSheet, int width, int height)
+        public Bear(Vector2 position,Texture2D animationSheet, int width, int height)
         {
             this.position = position;
             this.width = width;
@@ -48,6 +48,7 @@ namespace Map_Generator
             {
                 if (Attack(target)) target.curHealth--;
             }
+            boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
         }
 
         bool Attack(Player target)
