@@ -49,18 +49,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerSheet.png">
-      <Name>playerSheet</Name>
+    <Compile Include="player1Sheet.png">
+      <Name>player1Sheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerPic.png">
-      <Name>playerPic</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="ScenerySpriteSheet.png">
       <Name>ScenerySpriteSheet</Name>
       <Importer>TextureImporter</Importer>

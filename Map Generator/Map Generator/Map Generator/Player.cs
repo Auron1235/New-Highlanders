@@ -18,17 +18,17 @@ namespace Map_Generator
         private const float speedIncrement = 0.25f;
         public bool attacking;
 
-        public Player(Vector2 position, Texture2D animationSheet, int width, int height)
+        public Player(int index, Vector2 position, Texture2D animationSheet, int width, int height)
         {
             this.position = position;
+            this.width = width;
+            this.height = height;
+            this.origin = new Vector2(position.X + width / 2, position.Y + height / 2);
             this.animationSheet = animationSheet;
             this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width * 2, height * 2);
             this.boundingFootPrint = new Rectangle((int)position.X, (int)position.Y + 10, width, height);
             velocity = Vector2.Zero;
             origin = new Vector2(boundingBox.X + boundingBox.Width / 2, boundingBox.Y + boundingBox.Height / 2);
-
-            this.width = width;
-            this.height = height;
 
             maxHealth = 10;
             curHealth = 10;
@@ -82,7 +82,7 @@ namespace Map_Generator
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera2D camera, List<Wolf> wolves, List<Bear> bears)
+        public void Update(GameTime gameTime, GamePadState oldPadState, GamePadState newPadState, Camera2D camera, List<Wolf> wolves, List<Bear> bears)
         {
             previousPosition = position;
 
@@ -122,7 +122,6 @@ namespace Map_Generator
             }
             if (curKeyState.IsKeyDown(Keys.W) || curKeyState.IsKeyDown(Keys.S))
             {
-                
                 animationFrame++;
                 animationType = 2;
             }
@@ -175,7 +174,7 @@ namespace Map_Generator
             }
         }
 
-        public void NewDraw(SpriteBatch spritebatch)
+        public void Draw(SpriteBatch spritebatch)
         {
             if (animationType == 0)
             {
