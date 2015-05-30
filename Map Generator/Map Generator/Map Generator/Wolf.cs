@@ -21,6 +21,7 @@ namespace Map_Generator
             this.height = height;
             this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             this.animationSheet = animationSheet;
+
             senseRange = 150;
             attackRange = 10;
 
@@ -49,6 +50,7 @@ namespace Map_Generator
             {
                 if (Attack(target)) target.curHealth--;
             }
+            boundingBox = new Rectangle((int)position.X, (int)position.Y, width, height);
         }
 
         bool Attack(Player target)

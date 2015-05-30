@@ -35,9 +35,9 @@ namespace Map_Generator
             if (animationFrame >= 12) animationFrame = 0;
         }
 
-        public void Draw(SpriteBatch spritebatch)
+        public void Draw(SpriteBatch spritebatch, Texture2D spriteSheet)
         {
-            spritebatch.Draw(animationSheet, boundingBox, new Rectangle(width * animationFrame, height * animationType, width, height), Color.White);
+            spritebatch.Draw(spriteSheet, boundingBox, new Rectangle(width * animationFrame, height * animationType, width, height), Color.White);
         }
     }
 }
