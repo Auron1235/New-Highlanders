@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Map_Generator
 {
-    class Player : Sprite
+    public class Player : Sprite
     {
         public Vector2 previousPosition;
 

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Map_Generator
 {
-    class ChunkManager
+    public class ChunkManager
     {
         private List<Chunk> mChunks;
         private Random mSeededRandom;
@@ -162,13 +162,6 @@ namespace Map_Generator
                 spriteBatch.End();
             }
             //draws obstacles
-            //foreach (Chunk chunk in mChunks)
-            //{
-            //    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
-            //    chunk.DrawObstacles(spriteBatch, camera2D);
-            //    spriteBatch.End();
-            //}
-
             List<Obstacle> viewableObstacles = new List<Obstacle>();
             foreach (Chunk chunk in mChunks)
             {

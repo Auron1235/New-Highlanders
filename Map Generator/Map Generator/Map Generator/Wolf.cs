@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Map_Generator
 {
-    class Wolf : Sprite
+    public class Wolf : Sprite
     {
         public Player target;
 

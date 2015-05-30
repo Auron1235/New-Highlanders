@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Map_Generator
 {
-    class Sprite
+    public class Sprite
     {
         public Vector2 position;
         public Vector2 origin;

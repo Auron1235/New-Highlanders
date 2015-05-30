@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Map_Generator
 {
-    class AudioManager
+    public class AudioManager
     {
         #region DECLARATIONS
         private float mSfxVolume;

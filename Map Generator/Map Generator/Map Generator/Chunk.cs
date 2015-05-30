@@ -193,16 +193,6 @@ namespace Map_Generator
                 }
             }
             //spawnLocations.Sort((X, Y) => (X.Y.CompareTo(Y.Y)));
-
-            //creates something at each of the spawns.
-            //foreach (Vector2 spawn in spawnLocations)
-            //{
-            //    int i = mSeededRandom.Next(0, 3);
-            //    mObstaclesUnsorted.Add(new Rectangle((int)spawn.X, (int)spawn.Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
-            //    mObstacleImages.Add(new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height));
-            //}
-            //mObstaclesUnsorted.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom))); // sorts the list against the bottom of thier rectangles for Drawing.
-            //mObstacleImages.Sort((X, Y) => (X.Bottom.CompareTo(Y.Bottom)));
             
             ////List<Rectangle>() a;
             ////List<Rectangle> b = a.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
