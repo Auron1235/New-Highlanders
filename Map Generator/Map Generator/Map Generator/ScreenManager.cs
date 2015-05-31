@@ -9,12 +9,18 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Map_Generator
 {
-    //THIS WAS ALL ADAM'S IDEA! I didn't want static anywhere, but he made me do it! I'M SORRRRRRYYYYYYYYY!!!
-    //He let me remove it.
     public class ScreenManager
     {
         public enum Screen { splash, mainMenu, pauseSettings, menuSettings, playerSelect, gamePlay, pause, lost, won };
         private Screen curScreen;
+
+        private Texture2D player1Portrait;
+        private Texture2D player2Portrait;
+
+        private Texture2D maxHpPic;
+        private Texture2D curHpPic;
+        private Texture2D damagePic;
+        private Texture2D defensePic;
 
         private Texture2D splashPic;
         private Texture2D mainMenuPic;
@@ -50,6 +56,13 @@ namespace Map_Generator
         public void Initialize(ContentManager Content)
         {
             curScreen = Screen.gamePlay; //DEBUG faster testing, changed it to gameplay for now
+
+            player1Portrait = Content.Load<Texture2D>("UI/player1UI");
+            player2Portrait = Content.Load<Texture2D>("UI/player2UI");
+            maxHpPic = Content.Load<Texture2D>("UI/EmptyHeartUI");
+            curHpPic = Content.Load<Texture2D>("UI/FullHeartUI");
+            damagePic = Content.Load<Texture2D>("UI/AttackUI");
+            defensePic = Content.Load<Texture2D>("UI/DefenseUI");
 
             //splashPic = Content.Load<Texture2D>("");
             //mainMenuPic = Content.Load<Texture2D>("");
@@ -274,6 +287,51 @@ namespace Map_Generator
 
             player1.Draw(spriteBatch);
             player2.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
+
+            spriteBatch.Draw(player1Portrait, new Rectangle(camera2D.ViewPortRect.X + 10, camera2D.ViewPortRect.Y + 10, 80, 80), Color.White);
+            for (int i = 0; i < player1.curHealth; i++)
+            {
+                spriteBatch.Draw(curHpPic, new Rectangle(camera2D.ViewPortRect.X + 100 + (35 * i), camera2D.ViewPortRect.Y + 10, 30, 30), Color.White);
+            }
+            for (int i = 0; i < player1.maxHealth; i++)
+            {
+                spriteBatch.Draw(maxHpPic, new Rectangle(camera2D.ViewPortRect.X + 100 + (35 * i), camera2D.ViewPortRect.Y + 10, 30, 30), Color.White);
+            }
+            for (int i = 0; i < player1.attack; i++)
+            {
+                spriteBatch.Draw(damagePic, new Rectangle(camera2D.ViewPortRect.X + 100 + (35 * i), camera2D.ViewPortRect.Y + 40, 30, 30), Color.White);
+            }
+            for (int i = 0; i < player1.defense; i++)
+            {
+                spriteBatch.Draw(defensePic, new Rectangle(camera2D.ViewPortRect.X + 100 + (35 * i), camera2D.ViewPortRect.Y + 70, 30, 30), Color.White);
+            }
+
+            spriteBatch.Draw(player2Portrait, new Rectangle(camera2D.ViewPortRect.X + camera2D.ViewPortRect.Width - 90,
+                                                                camera2D.ViewPortRect.Y + 10, 80, 80), Color.White);
+            for (int i = player2.curHealth; i > 0; i--)
+            {
+                spriteBatch.Draw(curHpPic, new Rectangle(camera2D.ViewPortRect.X + camera2D.ViewPortRect.Width - 100 - (35 * i), 
+                                                             camera2D.ViewPortRect.Y + 10, 30, 30), Color.White);
+            }
+            for (int i = player2.curHealth; i > 0; i--)
+            {
+                spriteBatch.Draw(maxHpPic, new Rectangle(camera2D.ViewPortRect.X + camera2D.ViewPortRect.Width - 100 - (35 * i), 
+                                                             camera2D.ViewPortRect.Y + 10, 30, 30), Color.White);
+            }
+            for (int i = player2.attack; i > 0; i--)
+            {
+                spriteBatch.Draw(damagePic, new Rectangle(camera2D.ViewPortRect.X + camera2D.ViewPortRect.Width - 100 - (35 * i),
+                                                             camera2D.ViewPortRect.Y + 40, 30, 30), Color.White);
+            }
+            for (int i = player2.defense; i > 0; i--)
+            {
+                spriteBatch.Draw(defensePic, new Rectangle(camera2D.ViewPortRect.X + camera2D.ViewPortRect.Width - 100 - (35 * i),
+                                                             camera2D.ViewPortRect.Y + 70, 30, 30), Color.White);
+            }
+
             spriteBatch.End();
         }
 

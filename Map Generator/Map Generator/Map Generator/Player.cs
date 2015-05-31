@@ -32,8 +32,8 @@ namespace Map_Generator
             velocity = Vector2.Zero;
             origin = new Vector2(boundingBox.X + boundingBox.Width / 2, boundingBox.Y + boundingBox.Height / 2);
 
-            maxHealth = 10;
-            curHealth = 10;
+            maxHealth = 4;
+            curHealth = 4;
             attack = 2;
             defense = 2;
             attacking = true;
