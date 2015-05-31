@@ -98,14 +98,9 @@ Content\Sound Effects\WolfSounds\Growl2.xnb
 Content\Sound Effects\WolfSounds\Growl3.xnb
 Content\Sound Effects\WolfSounds\Growl4.xnb
 Content\Sound Effects\WolfSounds\Howl.xnb
-<<<<<<< HEAD
-Content\bearSpriteSheet.xnb
-Content\wolfSpriteSheet.xnb
-=======
 Content\UI\AttackUI.xnb
 Content\UI\DefenseUI.xnb
 Content\UI\EmptyHeartUI.xnb
 Content\UI\FullHeartUI.xnb
 Content\UI\player1UI.xnb
 Content\UI\player2UI.xnb
->>>>>>> origin/devLatest

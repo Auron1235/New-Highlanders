@@ -49,18 +49,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerSheet.png">
-      <Name>playerSheet</Name>
+    <Compile Include="player1Sheet.png">
+      <Name>player1Sheet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="playerPic.png">
-      <Name>playerPic</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="ScenerySpriteSheet.png">
       <Name>ScenerySpriteSheet</Name>
       <Importer>TextureImporter</Importer>
@@ -567,6 +562,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="bearSpriteSheet.png">
       <Name>bearSpriteSheet</Name>
       <Importer>TextureImporter</Importer>
@@ -576,6 +572,35 @@
   <ItemGroup>
     <Compile Include="wolfSpriteSheet.png">
       <Name>wolfSpriteSheet</Name>
+=======
+    <Compile Include="UI\AttackUI.png">
+      <Name>AttackUI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\DefenseUI.png">
+      <Name>DefenseUI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\EmptyHeartUI.png">
+      <Name>EmptyHeartUI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\FullHeartUI.png">
+      <Name>FullHeartUI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\player1UI.png">
+      <Name>player1UI</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\player2UI.png">
+      <Name>player2UI</Name>
+>>>>>>> origin/devLatest
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -37,7 +37,8 @@ namespace Map_Generator
         List<Wolf> wolves = new List<Wolf>();
         List<Bear> bears = new List<Bear>();
 
-        Player player;
+        Player player1;
+        Player player2;
         KeyboardState oldKState;
         KeyboardState newKState;
         GamePadState oldPadState;
@@ -72,9 +73,8 @@ namespace Map_Generator
             chunkManager.Initialize(499, spriteSheet, enemyManager); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
             // and move to the switch between the menu and gameplay.
 
-            player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), Content.Load<Texture2D>("playerSheet"), 21, 32);
-            //DEBUG - sets player position to centre chunk position
-            player.position = chunkManager.FindChunkCentre(new Vector2(2, 2));
+            player1 = new Player(1, chunkManager.FindChunkCentre(new Vector2(2, 2)) - new Vector2(200,0), Content.Load<Texture2D>("player1Sheet"), 21, 32);
+            player2 = new Player(2, chunkManager.FindChunkCentre(new Vector2(2, 2)) + new Vector2(200, 0), Content.Load<Texture2D>("player1Sheet"), 21, 32);
 
             screenManager = new ScreenManager();
             screenManager.Initialize(Content);
@@ -99,7 +99,11 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
+<<<<<<< HEAD
             screenManager.Update(player, gameTime, m_camera, wolves, bears, chunkManager, audioManager, enemyManager);
+=======
+            screenManager.Update(player1, player2, gameTime, m_camera, wolves, bears, chunkManager, audioManager);
+>>>>>>> origin/devLatest
 
             #region OLD GAME 1 UPDATE
             //newKState = Keyboard.GetState();
@@ -272,7 +276,11 @@ namespace Map_Generator
 
         protected override void Draw(GameTime gameTime)
         {
+<<<<<<< HEAD
             screenManager.Draw(spriteBatch, smallFont, player, m_camera, chunkManager, enemyManager);
+=======
+            screenManager.Draw(spriteBatch, smallFont, player1, player2, m_camera, chunkManager);
+>>>>>>> origin/devLatest
 
             #region OLD DRAW METHOD
             //switch (currentScreen)

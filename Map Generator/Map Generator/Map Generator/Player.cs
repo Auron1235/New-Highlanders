@@ -10,31 +10,33 @@ namespace Map_Generator
 {
     public class Player : Sprite
     {
-        public Vector2 previousPosition;
+        Vector2 previousPosition;
 
         public Rectangle boundingFootPrint;
 
         private const float speedMax = 1.9f;
         private const float speedIncrement = 0.25f;
-        public bool attacking;
 
-        public Player(Vector2 position, Texture2D animationSheet, int width, int height)
+        bool attacking;
+        int attackTimer;
+
+        public Player(int index, Vector2 position, Texture2D animationSheet, int width, int height)
         {
             this.position = position;
+            this.width = width;
+            this.height = height;
+            this.origin = new Vector2(position.X + width / 2, position.Y + height / 2);
             this.animationSheet = animationSheet;
             this.boundingBox = new Rectangle((int)position.X, (int)position.Y, width * 2, height * 2);
             this.boundingFootPrint = new Rectangle((int)position.X, (int)position.Y + 10, width, height);
             velocity = Vector2.Zero;
             origin = new Vector2(boundingBox.X + boundingBox.Width / 2, boundingBox.Y + boundingBox.Height / 2);
 
-            this.width = width;
-            this.height = height;
-
-            maxHealth = 10;
-            curHealth = 10;
+            maxHealth = 4;
+            curHealth = 4;
             attack = 2;
             defense = 2;
-            attacking = false;
+            attacking = true;
 
             animationType = 2;
             spriteEffect = SpriteEffects.None;
@@ -82,15 +84,17 @@ namespace Map_Generator
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState curKeyState, Camera2D camera, List<Wolf> wolves, List<Bear> bears)
+        public void Update(GameTime gameTime, GamePadState oldPadState, GamePadState newPadState, Camera2D camera, List<Wolf> wolves, List<Bear> bears)
         {
             previousPosition = position;
 
             //player movement, input processing
-            if (curKeyState.IsKeyDown(Keys.W)) velocity.Y -= speedIncrement;
-            if (curKeyState.IsKeyDown(Keys.S)) velocity.Y += speedIncrement;
-            if (curKeyState.IsKeyDown(Keys.A)) velocity.X -= speedIncrement;
-            if (curKeyState.IsKeyDown(Keys.D)) velocity.X += speedIncrement;
+            velocity.X += newPadState.ThumbSticks.Left.X * speedIncrement;
+            velocity.Y += newPadState.ThumbSticks.Left.Y * speedIncrement * -1;
+            //if (curKeyState.IsKeyDown(Keys.W)) velocity.Y -= speedIncrement;
+            //if (curKeyState.IsKeyDown(Keys.S)) velocity.Y += speedIncrement;
+            //if (curKeyState.IsKeyDown(Keys.A)) velocity.X -= speedIncrement;
+            //if (curKeyState.IsKeyDown(Keys.D)) velocity.X += speedIncrement;
 
             //limit player speed
             if (velocity.X > speedMax) velocity.X = speedMax;
@@ -110,72 +114,59 @@ namespace Map_Generator
             //player friction, will slow player to a stop.
             velocity *= 0.89f;
 
-            if (curKeyState.IsKeyDown(Keys.D))
-            {
-                animationFrame++;
-                spriteEffect = SpriteEffects.None;
-            }
-            if (curKeyState.IsKeyDown(Keys.A))
-            {
-                animationFrame++;
-                spriteEffect = SpriteEffects.FlipHorizontally;
-            }
-            if (curKeyState.IsKeyDown(Keys.W) || curKeyState.IsKeyDown(Keys.S))
-            {
-                
-                animationFrame++;
-                animationType = 2;
-            }
+            if (velocity.X > 0.1f) spriteEffect = SpriteEffects.None;
+            else if (velocity.X < -0.1f) spriteEffect = SpriteEffects.FlipHorizontally;
+            //if (velocity.Y < -0.1f || velocity.Y > 0.1f) animationFrame++;
 
-            if (curKeyState.IsKeyDown(Keys.E) || attacking == true)
+            if (newPadState.IsButtonDown(Buttons.A) && !(oldPadState.IsButtonDown(Buttons.A)))
             {
                 Attack(wolves, bears, gameTime);
             }
 
+            if (attacking = false && attackTimer > 200)
+            {
+                attacking = true;
+                attackTimer = 0;
+            }
             //Updates the animation every frame
-            //animationFrame++;
-            if (animationFrame >= 11)
-            {
-                animationFrame = 0;
-            }
-        }
-
-        public void Attack(List<Wolf> wolves, List<Bear> bears, GameTime gameTime)
-        {
-            if (attacking == false)
-            {
-                animationFrame = 0;
-            }
-            attacking = true;
-            animationType = 0;
-            if (attacking == true)
+            attackTimer++;
+            if ((velocity.X < -0.1f || velocity.X > 0.1f || velocity.Y < -0.1f || velocity.Y > 0.1f) || newPadState.IsButtonDown(Buttons.A))
             {
                 animationFrame++;
             }
             if (animationFrame >= 11)
             {
-                velocity *= 0.8f;
-                Rectangle attackBox = new Rectangle((int)position.X + width / 2, (int)position.Y, 20, height);
-                for (int i = 0; i < wolves.Count; i++)
+                animationFrame = 0;
+                if (animationType == 0)
                 {
-                    if (wolves[i].boundingBox.Intersects(boundingBox))
-                    {
-                        wolves[i].curHealth--;
-                    }
+                    animationType = 2;
                 }
-                for (int i = 0; i < bears.Count; i++)
-                {
-                    if (bears[i].boundingBox.Intersects(boundingBox))
-                    {
-                        bears[i].curHealth--;
-                    }
-                }
-                animationType = 2;
-                attacking = false;
             }
         }
 
-        public void NewDraw(SpriteBatch spritebatch)
+        void Attack(List<Wolf> wolves, List<Bear> bears, GameTime gameTime)
+        {
+            attacking = false;
+            animationType = 0;
+            velocity *= 0.8f;
+            Rectangle attackBox = new Rectangle((int)position.X + width / 2, (int)position.Y, 20, height);
+            for (int i = 0; i < wolves.Count; i++)
+            {
+                if (wolves[i].boundingBox.Intersects(boundingBox))
+                {
+                    wolves[i].curHealth--;
+                }
+            }
+            for (int i = 0; i < bears.Count; i++)
+            {
+                if (bears[i].boundingBox.Intersects(boundingBox))
+                {
+                    bears[i].curHealth--;
+                }
+            }
+        }
+
+        public void Draw(SpriteBatch spritebatch)
         {
             if (animationType == 0)
             {
