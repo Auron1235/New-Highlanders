@@ -253,3 +253,9 @@ D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Gene
 D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.exe
 D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Map Generator.pdb
 D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\obj\x86\Debug\Map Generator.pdb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\AttackUI.xnb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\DefenseUI.xnb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\EmptyHeartUI.xnb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\FullHeartUI.xnb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\player1UI.xnb
+D:\Users\WEPCR\Desktop\Gary's Programming\New-Highlanders\Map Generator\Map Generator\Map Generator\bin\x86\Debug\Content\UI\player2UI.xnb
