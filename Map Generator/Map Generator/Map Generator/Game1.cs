@@ -29,6 +29,7 @@ namespace Map_Generator
         AudioManager audioManager;
         ChunkManager chunkManager;
         ScreenManager screenManager;
+        EnemyManager enemyManager;
 
         Texture2D spriteSheet;
 
@@ -66,6 +67,10 @@ namespace Map_Generator
 
             chunkManager = new ChunkManager();
             chunkManager.Initialize(499, spriteSheet); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
+            // and move to the switch between the menu and gameplay.
+
+            enemyManager = new EnemyManager();
+            enemyManager.Initialize(Content);
 
             player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), Content.Load<Texture2D>("playerSheet"), 21, 32);
             //DEBUG - sets player position to centre chunk position

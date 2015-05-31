@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Map_Generator
 {
@@ -30,13 +31,13 @@ namespace Map_Generator
         {
         }
 
-        public void Initialise(Texture2D wolfSheet, Texture2D bearSheet)
+        public void Initialize(ContentManager Content)
         {
-            this.wolfSheet = wolfSheet;
-            this.bearSheet = bearSheet;
+            wolfSheet = Content.Load<Texture2D>("wolfSheet");
+            bearSheet = Content.Load<Texture2D>("bearSheet");
         }
 
-        public void Update(GameTime gameTime, Player player1, Player player2)
+        public void Update(GameTime gameTime, Player player1, Player player2, ChunkManager chunkManager, AudioManager audioManager)
         {
             foreach (List<Wolf> wolfPack in mWolfPacks)
             {

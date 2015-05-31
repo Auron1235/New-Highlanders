@@ -21,6 +21,11 @@ namespace Map_Generator
         {
             return ((point - Center).Length() <= Radius);
         }
+        public bool Contains(Point point)
+        {
+            Vector2 vpoint = new Vector2(point.X, point.Y);
+            return ((vpoint - Center).Length() <= Radius);
+        }
 
         public bool Intersects(Circle other)
         {

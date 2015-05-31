@@ -116,6 +116,7 @@
     <Compile Include="Camera2D.cs" />
     <Compile Include="Chunk.cs" />
     <Compile Include="ChunkManager.cs" />
+    <Compile Include="Circle.cs" />
     <Compile Include="EnemyManager.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="PickUp.cs" />

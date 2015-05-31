@@ -24,6 +24,11 @@ namespace Map_Generator
         private int mObsIslandDensity; // amount of islands of obstacles that appear on a chunk
         private int mObsDensity; //amount of items making up the islands
 
+        //enemy stuff
+        private int mDangerLevel;
+        private int mPackDensity;
+        private int spawnSafeRadius;
+
         private int mChunkDimensions;
         private int mTileDimensions;
 
@@ -121,6 +126,10 @@ namespace Map_Generator
             mObsIslandDensity = 10;
             mObsDensity = 50;
 
+            mDangerLevel = 5;
+            mPackDensity = 6;
+            spawnSafeRadius = 150;
+
             mObsRectangles = new List<Rectangle>();
             mObsRectangles.Add(new Rectangle(0, 32, 32, 32)); //heather, 0
             mObsRectangles.Add(new Rectangle(32, 32, 32, 32)); //rock, 1
@@ -208,6 +217,94 @@ namespace Map_Generator
                     new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height)));
             }
             mObstacles.Sort((X, Y) => (X.Image.Bottom.CompareTo(Y.Image.Bottom)));
+        }
+
+        public void GenerateEnemySpawns()
+        {
+            List<Vector2> spawnLocations = new List<Vector2>();
+            List<Vector2> wolves = new List<Vector2>();
+            List<Vector2> bears = new List<Vector2>();
+
+            //selects a random density of islands to be placed based on the density value of the chunk.
+            for (int spawnCount = 0; spawnCount < mDangerLevel; spawnCount++) //DEBUG replace 250 with islandDensity
+            {
+                //generates a new spawn location inside the bounds of the Chunk and adds to spawn location list.
+                //add checking for circle distance and reiterate through this check 3 times with new spawns.
+                //Circle spawnArea = new Circle();
+                Vector2 newspawn = GenerateSingleSpawn();
+
+                for (int i = 0; i < 3; i++)
+                {
+                    Circle spawnArea = new Circle(newspawn, spawnSafeRadius);
+
+                    for (int j = 0; j < mObstacles.Count; j++)
+                    {
+                        if (spawnArea.Contains(mObstacles[j].Bounds.Center))
+                        {
+                            newspawn = GenerateSingleSpawn();
+                        }
+                        else
+                        {
+                            spawnLocations.Add(newspawn);
+                        }
+                    }
+                }
+            }
+
+            //split it into two lists
+            foreach (Vector2 spawn in spawnLocations)
+            {
+                if (mSeededRandom.Next(0, 1) == 1)
+                {
+                    wolves.Add(spawn);
+                }
+                else
+                {
+                    bears.Add(spawn);
+                }
+            }
+            //enemyManager.SpawnBears()
+
+            //creates a set of radial points for pack animals.
+            for (int packSize = spawnLocations.Count; packSize > 0; packSize--)
+            {
+                int radialPoints = mSeededRandom.Next(3, mPackDensity);
+
+                for (int i = 0; i <= radialPoints; i++)
+                {
+                    //generate distance in pixels.
+                    int distance = mSeededRandom.Next(35, 150);
+
+                    //generate angle
+                    Vector2 angle = new Vector2((float)Math.Cos((mSeededRandom.Next(-314, 314) / 100)), (float)Math.Sin((mSeededRandom.Next(-314, 314) / 100)));
+
+                    //add the angle * distance to the span point for a new vector.
+                    spawnLocations.Add(spawnLocations[packSize - 1] + angle * distance); //add to the list.
+                }
+            }
+            //spawnLocations.Sort((X, Y) => (X.Y.CompareTo(Y.Y)));
+
+            ////List<Rectangle>() a;
+            ////List<Rectangle> b = a.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
+            ////List<Rectangle>() a;
+            //mObstacles = mObstaclesUnsorted.OrderBy(x => x.Right).ThenBy(x => x.Bottom).ToList();
+            //mObstacles.Reverse();
+
+            foreach (Vector2 spawn in spawnLocations)
+            {
+                int i = mSeededRandom.Next(0, 3);
+                mObstacles.Add(new Obstacle(
+                    new Rectangle((int)spawn.X, (int)spawn.Y, mObsRectangles[i].Width, mObsRectangles[i].Height),
+                    new Rectangle(mObsRectangles[i].X, mObsRectangles[i].Y, mObsRectangles[i].Width, mObsRectangles[i].Height)));
+            }
+            mObstacles.Sort((X, Y) => (X.Image.Bottom.CompareTo(Y.Image.Bottom)));
+        }
+
+        private Vector2 GenerateSingleSpawn()
+        {
+            return new Vector2(
+                                mSeededRandom.Next(mChunkRectangle.X, (mChunkRectangle.X + mChunkRectangle.Width)),
+                                mSeededRandom.Next(mChunkRectangle.Y, (mChunkRectangle.Y + mChunkRectangle.Height)));
         }
 
         public void DrawGround(SpriteBatch spriteBatch, Camera2D camera2D)
