@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Map_Generator
 {
-    class EnemyManager
+    public class EnemyManager
     {
         private List<List<Wolf>> mWolfPacks;
         private Texture2D wolfSheet;
@@ -33,8 +33,11 @@ namespace Map_Generator
 
         public void Initialize(ContentManager Content)
         {
-            wolfSheet = Content.Load<Texture2D>("wolfSheet");
-            bearSheet = Content.Load<Texture2D>("bearSheet");
+            wolfSheet = Content.Load<Texture2D>("wolfSpriteSheet");
+            bearSheet = Content.Load<Texture2D>("bearSpriteSheet");
+
+            mBears = new List<Bear>();
+            mWolfPacks = new List<List<Wolf>>();
         }
 
         public void Update(GameTime gameTime, Player player1, Player player2, ChunkManager chunkManager, AudioManager audioManager)
