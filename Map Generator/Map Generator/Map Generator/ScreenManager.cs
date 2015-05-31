@@ -25,8 +25,10 @@ namespace Map_Generator
         private Texture2D lostPic;
         private Texture2D wonPic;
 
-        private GamePadState oldPadState;
-        private GamePadState newPadState;
+        private GamePadState oldPad1State;
+        private GamePadState newPad1State;
+        private GamePadState oldPad2State;
+        private GamePadState newPad2State;
         private KeyboardState oldKState;
         private KeyboardState newKState;
 
@@ -47,7 +49,7 @@ namespace Map_Generator
 
         public void Initialize(ContentManager Content)
         {
-            curScreen = Screen.splash;
+            curScreen = Screen.gamePlay; //DEBUG faster testing, changed it to gameplay for now
 
             //splashPic = Content.Load<Texture2D>("");
             //mainMenuPic = Content.Load<Texture2D>("");
@@ -58,35 +60,38 @@ namespace Map_Generator
             //lostPic = Content.Load<Texture2D>("");
             //wonPic = Content.Load<Texture2D>("");
 
-            oldPadState = GamePad.GetState(PlayerIndex.One);
+            oldPad1State = GamePad.GetState(PlayerIndex.One);
+            oldPad2State = GamePad.GetState(PlayerIndex.Two);
             oldKState = Keyboard.GetState();
 
             debugToggle = true;
             gameExit = false;
         }
 
-        public void Update(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
+        public void Update(Player player1, Player player2, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audio)
         {
-            newPadState = GamePad.GetState(PlayerIndex.One);
+            newPad1State = GamePad.GetState(PlayerIndex.One);
+            newPad2State = GamePad.GetState(PlayerIndex.Two);
             newKState = Keyboard.GetState();
             if (newKState.IsKeyDown(Keys.F1) && oldKState.IsKeyUp(Keys.F1)) debugToggle = !debugToggle;
             switch (curScreen)
             {
-                case Screen.splash: SplashUpdate(); break;
-                case Screen.mainMenu: MainMenuUpdate(); break;
-                case Screen.pauseSettings: PauseSettingsUpdate() ;break;
-                case Screen.menuSettings: MenuSettingsUpdate(); break;
-                case Screen.playerSelect: PlayerSelectUpdate(); break;
-                case Screen.gamePlay: GamePlayUpdate(player, gameTime, camera2D, wolves, bears, chunkManager, audioManager); break;
-                case Screen.pause: PauseUpdate(); break;
-                case Screen.lost: EndUpdate(); break;
-                case Screen.won: EndUpdate(); break;
+                case Screen.splash: SplashUpdate(audio); break;
+                case Screen.mainMenu: MainMenuUpdate(audio); break;
+                case Screen.pauseSettings: PauseSettingsUpdate(audio) ;break;
+                case Screen.menuSettings: MenuSettingsUpdate(audio); break;
+                case Screen.playerSelect: PlayerSelectUpdate(audio); break;
+                case Screen.gamePlay: GamePlayUpdate(player1, player2, gameTime, camera2D, wolves, bears, chunkManager, audio); break;
+                case Screen.pause: PauseUpdate(audio); break;
+                case Screen.lost: EndUpdate(audio); break;
+                case Screen.won: EndUpdate(audio); break;
             }
-            oldPadState = newPadState;
+            oldPad1State = newPad1State;
+            oldPad2State = newPad2State;
             oldKState = newKState;
         }
 
-        public void Draw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, Camera2D camera2D, ChunkManager chunkManager)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player1, Player player2, Camera2D camera2D, ChunkManager chunkManager)
         {
             switch (curScreen)
             {
@@ -95,17 +100,17 @@ namespace Map_Generator
                 case Screen.pauseSettings: SettingsDraw(spriteBatch, smallFont); break;
                 case Screen.menuSettings: SettingsDraw(spriteBatch, smallFont); break;
                 case Screen.playerSelect: PlayerSelectDraw(spriteBatch, smallFont); break;
-                case Screen.gamePlay: GamePlayDraw(spriteBatch, smallFont, player, chunkManager, camera2D); break;
+                case Screen.gamePlay: GamePlayDraw(spriteBatch, smallFont, player1, player2, chunkManager, camera2D); break;
                 case Screen.pause: PauseDraw(spriteBatch, smallFont); break;
                 case Screen.lost: LostDraw(spriteBatch); break;
                 case Screen.won: WonDraw(spriteBatch); break;
             }
         }
 
-        private void SplashUpdate()
+        private void SplashUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;
+            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;
 
             //Debug Controls
             if (debugToggle)
@@ -122,13 +127,12 @@ namespace Map_Generator
 
         }
 
-
-        private void MainMenuUpdate()
+        private void MainMenuUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) curScreen = Screen.playerSelect;
-            if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) curScreen = Screen.menuSettings;
-            if (newPadState.Buttons.Back == ButtonState.Pressed && oldPadState.Buttons.Back != ButtonState.Pressed) gameExit = true;
+            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.playerSelect;
+            if (newPad1State.Buttons.Y == ButtonState.Pressed && oldPad1State.Buttons.Y != ButtonState.Pressed) curScreen = Screen.menuSettings;
+            if (newPad1State.Buttons.Back == ButtonState.Pressed && oldPad1State.Buttons.Back != ButtonState.Pressed) gameExit = true;
 
             //DebugToggle Controls
             if (debugToggle)
@@ -162,12 +166,12 @@ namespace Map_Generator
         }
 
 
-        private void MenuSettingsUpdate()
+        private void MenuSettingsUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
-            if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
-            if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) curScreen = Screen.mainMenu;
+            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) { } //Volume Down
+            if (newPad1State.Buttons.Y == ButtonState.Pressed && oldPad1State.Buttons.Y != ButtonState.Pressed) { } // Volume Up
+            if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.mainMenu;
 
             //DebugToggle Controls
             if (debugToggle)
@@ -200,11 +204,11 @@ namespace Map_Generator
         }
 
 
-        private void PlayerSelectUpdate()
+        private void PlayerSelectUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) curScreen = Screen.gamePlay;
-            if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) curScreen = Screen.mainMenu;
+            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.gamePlay;
+            if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.mainMenu;
 
             //DebugToggle Controls
             if (debugToggle)
@@ -236,16 +240,17 @@ namespace Map_Generator
         }
 
 
-        private void GamePlayUpdate(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
+        private void GamePlayUpdate(Player player1, Player player2, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
         {
-            player.Update(gameTime, Keyboard.GetState(), camera2D, wolves, bears);
+            player1.Update(gameTime, oldPad1State, newPad1State, camera2D, wolves, bears);
+            player2.Update(gameTime, oldPad2State, newPad2State, camera2D, wolves, bears);
 
-            camera2D.Target = player.position;
+            camera2D.Target = (player1.origin + player2.origin) / 2;
 
             chunkManager.Update(camera2D.Target);
 
             //Normal control info
-            if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) curScreen = Screen.pause;
+            if (newPad1State.Buttons.Start == ButtonState.Pressed && oldPad1State.Buttons.Start != ButtonState.Pressed) curScreen = Screen.pause;
 
             //DebugToggle control info
             if (newKState.IsKeyDown(Keys.Space) && !oldKState.IsKeyDown(Keys.Space)) curScreen = Screen.pause;
@@ -254,7 +259,7 @@ namespace Map_Generator
             camera2D.UpdateViewPort(Vector2.Zero);
 
         }
-        private void GamePlayDraw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, ChunkManager chunkManager, Camera2D camera2D)
+        private void GamePlayDraw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player1, Player player2, ChunkManager chunkManager, Camera2D camera2D)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
 
@@ -267,17 +272,18 @@ namespace Map_Generator
 
             //TODO insert enemy drawing here
 
-            player.NewDraw(spriteBatch);
+            player1.Draw(spriteBatch);
+            player2.Draw(spriteBatch);
             spriteBatch.End();
         }
 
 
-        private void PauseUpdate()
+        private void PauseUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) curScreen = Screen.gamePlay;
-            if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) curScreen = Screen.pauseSettings;
-            if (newPadState.Buttons.Back == ButtonState.Pressed && oldPadState.Buttons.Back != ButtonState.Pressed) gameExit = true;
+            if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.gamePlay;
+            if (newPad1State.Buttons.Y == ButtonState.Pressed && oldPad1State.Buttons.Y != ButtonState.Pressed) curScreen = Screen.pauseSettings;
+            if (newPad1State.Buttons.Back == ButtonState.Pressed && oldPad1State.Buttons.Back != ButtonState.Pressed) gameExit = true;
 
             //DebugToggle Controls
             if (debugToggle)
@@ -309,12 +315,20 @@ namespace Map_Generator
         }
 
 
-        private void PauseSettingsUpdate()
+        private void PauseSettingsUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) { } //Volume Down
-            if (newPadState.Buttons.Y == ButtonState.Pressed && oldPadState.Buttons.Y != ButtonState.Pressed) { } // Volume Up
-            if (newPadState.Buttons.B == ButtonState.Pressed && oldPadState.Buttons.B != ButtonState.Pressed) curScreen = Screen.pause;
+            if (newPad1State.DPad.Left == ButtonState.Pressed) 
+            { 
+                audio.MusicVolume -= 0.1f;
+                audio.SfxVolume -= 0.1f;
+            }
+            if (newPad1State.DPad.Right == ButtonState.Pressed)
+            {
+                audio.MusicVolume += 0.1f;
+                audio.SfxVolume += 0.1f;
+            }
+            if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.pause;
 
             //DebugToggle Controls
             if (debugToggle)
@@ -326,10 +340,10 @@ namespace Map_Generator
         }
 
 
-        private void EndUpdate()
+        private void EndUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;
+            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;
 
             //DebugToggle Controls
             if (debugToggle)
