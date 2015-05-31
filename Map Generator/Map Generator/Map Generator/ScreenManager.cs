@@ -49,7 +49,7 @@ namespace Map_Generator
 
         public void Initialize(ContentManager Content)
         {
-            curScreen = Screen.splash;
+            curScreen = Screen.gamePlay; //DEBUG faster testing, changed it to gameplay for now
 
             //splashPic = Content.Load<Texture2D>("");
             //mainMenuPic = Content.Load<Texture2D>("");
@@ -68,7 +68,7 @@ namespace Map_Generator
             gameExit = false;
         }
 
-        public void Update(Player player1, Player player2, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
+        public void Update(Player player1, Player player2, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audio)
         {
             newPad1State = GamePad.GetState(PlayerIndex.One);
             newPad2State = GamePad.GetState(PlayerIndex.Two);
@@ -76,15 +76,15 @@ namespace Map_Generator
             if (newKState.IsKeyDown(Keys.F1) && oldKState.IsKeyUp(Keys.F1)) debugToggle = !debugToggle;
             switch (curScreen)
             {
-                case Screen.splash: SplashUpdate(); break;
-                case Screen.mainMenu: MainMenuUpdate(); break;
-                case Screen.pauseSettings: PauseSettingsUpdate() ;break;
-                case Screen.menuSettings: MenuSettingsUpdate(); break;
-                case Screen.playerSelect: PlayerSelectUpdate(); break;
-                case Screen.gamePlay: GamePlayUpdate(player1, player2, gameTime, camera2D, wolves, bears, chunkManager, audioManager); break;
-                case Screen.pause: PauseUpdate(); break;
-                case Screen.lost: EndUpdate(); break;
-                case Screen.won: EndUpdate(); break;
+                case Screen.splash: SplashUpdate(audio); break;
+                case Screen.mainMenu: MainMenuUpdate(audio); break;
+                case Screen.pauseSettings: PauseSettingsUpdate(audio) ;break;
+                case Screen.menuSettings: MenuSettingsUpdate(audio); break;
+                case Screen.playerSelect: PlayerSelectUpdate(audio); break;
+                case Screen.gamePlay: GamePlayUpdate(player1, player2, gameTime, camera2D, wolves, bears, chunkManager, audio); break;
+                case Screen.pause: PauseUpdate(audio); break;
+                case Screen.lost: EndUpdate(audio); break;
+                case Screen.won: EndUpdate(audio); break;
             }
             oldPad1State = newPad1State;
             oldPad2State = newPad2State;
@@ -107,7 +107,7 @@ namespace Map_Generator
             }
         }
 
-        private void SplashUpdate()
+        private void SplashUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;
@@ -127,7 +127,7 @@ namespace Map_Generator
 
         }
 
-        private void MainMenuUpdate()
+        private void MainMenuUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.playerSelect;
@@ -166,7 +166,7 @@ namespace Map_Generator
         }
 
 
-        private void MenuSettingsUpdate()
+        private void MenuSettingsUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) { } //Volume Down
@@ -204,7 +204,7 @@ namespace Map_Generator
         }
 
 
-        private void PlayerSelectUpdate()
+        private void PlayerSelectUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.gamePlay;
@@ -278,7 +278,7 @@ namespace Map_Generator
         }
 
 
-        private void PauseUpdate()
+        private void PauseUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.gamePlay;
@@ -315,11 +315,19 @@ namespace Map_Generator
         }
 
 
-        private void PauseSettingsUpdate()
+        private void PauseSettingsUpdate(AudioManager audio)
         {
             //Normal Controls
-            if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) { } //Volume Down
-            if (newPad1State.Buttons.Y == ButtonState.Pressed && oldPad1State.Buttons.Y != ButtonState.Pressed) { } // Volume Up
+            if (newPad1State.DPad.Left == ButtonState.Pressed) 
+            { 
+                audio.MusicVolume -= 0.1f;
+                audio.SfxVolume -= 0.1f;
+            }
+            if (newPad1State.DPad.Right == ButtonState.Pressed)
+            {
+                audio.MusicVolume += 0.1f;
+                audio.SfxVolume += 0.1f;
+            }
             if (newPad1State.Buttons.B == ButtonState.Pressed && oldPad1State.Buttons.B != ButtonState.Pressed) curScreen = Screen.pause;
 
             //DebugToggle Controls
@@ -332,7 +340,7 @@ namespace Map_Generator
         }
 
 
-        private void EndUpdate()
+        private void EndUpdate(AudioManager audio)
         {
             //Normal Controls
             if (newPad1State.Buttons.A == ButtonState.Pressed && oldPad1State.Buttons.A != ButtonState.Pressed) curScreen = Screen.mainMenu;

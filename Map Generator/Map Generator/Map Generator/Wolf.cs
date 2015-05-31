@@ -9,7 +9,7 @@ namespace Map_Generator
 {
     public class Wolf : Sprite
     {
-        public Player target;
+        private Player target;
 
         int senseRange;
         int attackRange;
