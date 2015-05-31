@@ -8,10 +8,14 @@ namespace Map_Generator
 {
     public struct Circle
     {
+        private Vector2 mCentre;
+        private float mRadius;
+
         public Vector2 Center { get; set; }
         public float Radius { get; set; }
 
         public Circle(Vector2 center, float radius)
+            : this()
         {
             Center = center;
             Radius = radius;
