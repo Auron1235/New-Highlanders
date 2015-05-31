@@ -65,7 +65,7 @@ namespace Map_Generator
             gameExit = false;
         }
 
-        public void Update(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
+        public void Update(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager, EnemyManager enemyManager)
         {
             newPadState = GamePad.GetState(PlayerIndex.One);
             newKState = Keyboard.GetState();
@@ -76,8 +76,8 @@ namespace Map_Generator
                 case Screen.mainMenu: MainMenuUpdate(); break;
                 case Screen.pauseSettings: PauseSettingsUpdate() ;break;
                 case Screen.menuSettings: MenuSettingsUpdate(); break;
-                case Screen.playerSelect: PlayerSelectUpdate(); break;
-                case Screen.gamePlay: GamePlayUpdate(player, gameTime, camera2D, wolves, bears, chunkManager, audioManager); break;
+                case Screen.playerSelect: PlayerSelectUpdate(chunkManager, enemyManager); break;
+                case Screen.gamePlay: GamePlayUpdate(player, gameTime, camera2D, wolves, bears, chunkManager, audioManager, enemyManager); break;
                 case Screen.pause: PauseUpdate(); break;
                 case Screen.lost: EndUpdate(); break;
                 case Screen.won: EndUpdate(); break;
@@ -86,7 +86,7 @@ namespace Map_Generator
             oldKState = newKState;
         }
 
-        public void Draw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, Camera2D camera2D, ChunkManager chunkManager)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, Camera2D camera2D, ChunkManager chunkManager, EnemyManager enemyManager)
         {
             switch (curScreen)
             {
@@ -95,7 +95,7 @@ namespace Map_Generator
                 case Screen.pauseSettings: SettingsDraw(spriteBatch, smallFont); break;
                 case Screen.menuSettings: SettingsDraw(spriteBatch, smallFont); break;
                 case Screen.playerSelect: PlayerSelectDraw(spriteBatch, smallFont); break;
-                case Screen.gamePlay: GamePlayDraw(spriteBatch, smallFont, player, chunkManager, camera2D); break;
+                case Screen.gamePlay: GamePlayDraw(spriteBatch, smallFont, player, chunkManager, camera2D, enemyManager); break;
                 case Screen.pause: PauseDraw(spriteBatch, smallFont); break;
                 case Screen.lost: LostDraw(spriteBatch); break;
                 case Screen.won: WonDraw(spriteBatch); break;
@@ -200,7 +200,7 @@ namespace Map_Generator
         }
 
 
-        private void PlayerSelectUpdate()
+        private void PlayerSelectUpdate(ChunkManager chunkManager, EnemyManager enemyManager)
         {
             //Normal Controls
             if (newPadState.Buttons.A == ButtonState.Pressed && oldPadState.Buttons.A != ButtonState.Pressed) curScreen = Screen.gamePlay;
@@ -209,7 +209,11 @@ namespace Map_Generator
             //DebugToggle Controls
             if (debugToggle)
             {
-                if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E)) curScreen = Screen.gamePlay;
+                if (newKState.IsKeyDown(Keys.E) && !oldKState.IsKeyDown(Keys.E))
+                {
+                    chunkManager.CreateInitialArea(enemyManager);
+                    curScreen = Screen.gamePlay;
+                }
                 if (newKState.IsKeyDown(Keys.Q) && !oldKState.IsKeyDown(Keys.Q)) curScreen = Screen.mainMenu;
             }
         }
@@ -236,13 +240,14 @@ namespace Map_Generator
         }
 
 
-        private void GamePlayUpdate(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager)
+        private void GamePlayUpdate(Player player, GameTime gameTime, Camera2D camera2D, List<Wolf> wolves, List<Bear> bears, ChunkManager chunkManager, AudioManager audioManager, EnemyManager enemyManager)
         {
             player.Update(gameTime, Keyboard.GetState(), camera2D, wolves, bears);
 
             camera2D.Target = player.position;
 
-            chunkManager.Update(camera2D.Target);
+            chunkManager.Update(camera2D.Target, enemyManager);
+            enemyManager.Update(gameTime, player, player, chunkManager, audioManager);
 
             //Normal control info
             if (newPadState.Buttons.Start == ButtonState.Pressed && oldPadState.Buttons.Start != ButtonState.Pressed) curScreen = Screen.pause;
@@ -254,19 +259,18 @@ namespace Map_Generator
             camera2D.UpdateViewPort(Vector2.Zero);
 
         }
-        private void GamePlayDraw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, ChunkManager chunkManager, Camera2D camera2D)
+        private void GamePlayDraw(SpriteBatch spriteBatch, SpriteFont smallFont, Player player, ChunkManager chunkManager, Camera2D camera2D, EnemyManager enemyManager)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //Draw calls are fully managed on Chunk Manager, including necessary overloads to SpriteBatch.
             //DO NOT USE spriteBatch.Begin() or .End(); THEY ARE NOT REQUIRED.
             chunkManager.Draw(spriteBatch, camera2D);
+            enemyManager.Draw(spriteBatch, camera2D);
             //DO NOT USE spriteBatch.Begin() or .End(); THEY ARE NOT REQUIRED.
 
+
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera2D.GetViewPortMatrix);
-
-            //TODO insert enemy drawing here
-
             player.NewDraw(spriteBatch);
             spriteBatch.End();
         }

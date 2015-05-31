@@ -65,12 +65,12 @@ namespace Map_Generator
             audioManager = new AudioManager();
             audioManager.Initialize(Content);
 
-            chunkManager = new ChunkManager();
-            chunkManager.Initialize(499, spriteSheet); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
-            // and move to the switch between the menu and gameplay.
-
             enemyManager = new EnemyManager();
             enemyManager.Initialize(Content);
+
+            chunkManager = new ChunkManager();
+            chunkManager.Initialize(499, spriteSheet, enemyManager); //TODO - DEBUG - replace "499" with the elapsed milliseconds at time of entring gameplay.
+            // and move to the switch between the menu and gameplay.
 
             player = new Player(new Vector2(screenWidth / 2, screenHeight / 2), Content.Load<Texture2D>("playerSheet"), 21, 32);
             //DEBUG - sets player position to centre chunk position
@@ -99,7 +99,7 @@ namespace Map_Generator
 
         protected override void Update(GameTime gameTime)
         {
-            screenManager.Update(player, gameTime, m_camera, wolves, bears, chunkManager, audioManager);
+            screenManager.Update(player, gameTime, m_camera, wolves, bears, chunkManager, audioManager, enemyManager);
 
             #region OLD GAME 1 UPDATE
             //newKState = Keyboard.GetState();
@@ -272,7 +272,7 @@ namespace Map_Generator
 
         protected override void Draw(GameTime gameTime)
         {
-            screenManager.Draw(spriteBatch, smallFont, player, m_camera, chunkManager);
+            screenManager.Draw(spriteBatch, smallFont, player, m_camera, chunkManager, enemyManager);
 
             #region OLD DRAW METHOD
             //switch (currentScreen)

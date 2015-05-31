@@ -63,32 +63,37 @@ namespace Map_Generator
             mChunks = new List<Chunk>();
         }
 
-        public void Initialize(int initialSeed, Texture2D initialSpritesheet)
+        public void Initialize(int initialSeed, Texture2D initialSpritesheet, EnemyManager enemyManager)
         {
             int mSeed = initialSeed;
             mSeededRandom = new Random(mSeed);
             mSpriteSheet = initialSpritesheet;
             mPrevFocusChunk = new Vector2(2, 2); //sets start position to the centre of the 5x5 grid we generate.
 
+            //CreateInitialArea(enemyManager);
+        }
+
+        public void CreateInitialArea(EnemyManager enemyManager)
+        {
             for (int x = 0; x < LoadedArea; x++)
             {
                 for (int y = 0; y < LoadedArea; y++)
                 {
-                    CreateChunk(x, y);
+                    CreateChunk(x, y, enemyManager);
                 }
             }
         }
 
-        private void CreateChunk(Vector2 chunkPosition)
+        private void CreateChunk(Vector2 chunkPosition, EnemyManager enemyManager)
         {
-            CreateChunk((int)chunkPosition.X, (int)chunkPosition.Y);
+            CreateChunk((int)chunkPosition.X, (int)chunkPosition.Y, enemyManager);
         }
-        private void CreateChunk(int x, int y)
+        private void CreateChunk(int x, int y, EnemyManager enemyManager)
         {
             int chunkSeed = mSeededRandom.Next(0, 999);
             int chunkID = GenerateChunkID(chunkSeed, x, y);
 
-            Chunk chunk = new Chunk(chunkID, new Vector2(x, y), ChunkDimensions, TileDimensions, mSpriteSheet);
+            Chunk chunk = new Chunk(chunkID, new Vector2(x, y), ChunkDimensions, TileDimensions, mSpriteSheet, enemyManager);
             mChunks.Add(chunk);
         }
 
@@ -99,7 +104,7 @@ namespace Map_Generator
             return generatedID;
         }
 
-        public void Update(Vector2 cameraFocusPoint)
+        public void Update(Vector2 cameraFocusPoint, EnemyManager enemyManager)
         {
             //gets the current chunk X,Y coordinate
             mCurFocusChunk = GetChunkCoordinate(cameraFocusPoint);
@@ -108,20 +113,20 @@ namespace Map_Generator
             {
                 //calcuates movement direction then updates X then Y chunks.
                 Vector2 direction = mCurFocusChunk - mPrevFocusChunk;
-                if (direction.X != 0) LoadUnloadChunksX(direction, mCurFocusChunk);
-                if (direction.Y != 0) LoadUnloadChunksY(direction, mCurFocusChunk);
+                if (direction.X != 0) LoadUnloadChunksX(direction, mCurFocusChunk, enemyManager);
+                if (direction.Y != 0) LoadUnloadChunksY(direction, mCurFocusChunk, enemyManager);
 
             }
 
             mPrevFocusChunk = mCurFocusChunk;
         }
 
-        public void LoadUnloadChunksX(Vector2 direction, Vector2 mCurFocusChunk)
+        public void LoadUnloadChunksX(Vector2 direction, Vector2 mCurFocusChunk, EnemyManager enemyManager)
         {
             //loads chunks
             for (int y = 0; y < LoadedArea; y++)
             {
-                CreateChunk(new Vector2(mCurFocusChunk.X + (direction.X * 2), (mCurFocusChunk.Y - 2) + y));
+                CreateChunk(new Vector2(mCurFocusChunk.X + (direction.X * 2), (mCurFocusChunk.Y - 2) + y), enemyManager);
             }
             //unloads chunks
             for (int i = mChunks.Count - 1; i >= 0; i--)
@@ -134,12 +139,12 @@ namespace Map_Generator
             }
         }
 
-        public void LoadUnloadChunksY(Vector2 direction, Vector2 mCurFocusChunk)
+        public void LoadUnloadChunksY(Vector2 direction, Vector2 mCurFocusChunk, EnemyManager enemyManager)
         {
             //loads chunks
             for (int x = 0; x < LoadedArea; x++)
             {
-                CreateChunk(new Vector2((mCurFocusChunk.X - 2) + x, mCurFocusChunk.Y + (direction.Y * 2)));
+                CreateChunk(new Vector2((mCurFocusChunk.X - 2) + x, mCurFocusChunk.Y + (direction.Y * 2)), enemyManager);
             }
             //unloads chunks
             for (int i = mChunks.Count - 1; i >= 0; i--)

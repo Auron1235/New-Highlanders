@@ -105,7 +105,7 @@ namespace Map_Generator
 
         // constructor
         public Chunk(int initialChunkID, Vector2 initialChunkPos, int initialChunkDimensions,
-            int initialTileDimensions, Texture2D initialSpriteSheet)
+            int initialTileDimensions, Texture2D initialSpriteSheet, EnemyManager enemyManager)
         {
             mChunkID = initialChunkID;
             mChunkPos = initialChunkPos;
@@ -160,6 +160,7 @@ namespace Map_Generator
 
             //Picks random areas to be set as collidables and gives it a random wall pic to use.
             GenerateObsSpawns();
+            GenerateEnemySpawns(enemyManager);
         }
 
         public Vector2 ChunkCentre()
@@ -170,7 +171,7 @@ namespace Map_Generator
             return chunkCentre;
         }
 
-        public void GenerateObsSpawns()
+        private void GenerateObsSpawns()
         {
             List<Vector2> spawnLocations = new List<Vector2>();
             List<Rectangle> mObstaclesUnsorted = new List<Rectangle>();
@@ -219,7 +220,7 @@ namespace Map_Generator
             mObstacles.Sort((X, Y) => (X.Image.Bottom.CompareTo(Y.Image.Bottom)));
         }
 
-        public void GenerateEnemySpawns()
+        public void GenerateEnemySpawns(EnemyManager enemyManager)
         {
             List<Vector2> spawnLocations = new List<Vector2>();
             List<Vector2> wolves = new List<Vector2>();
@@ -263,27 +264,40 @@ namespace Map_Generator
                     bears.Add(spawn);
                 }
             }
-            //enemyManager.SpawnBears()
-
-            //creates a set of radial points for pack animals.
-            for (int packSize = spawnLocations.Count; packSize > 0; packSize--)
+            if (bears.Count > 0)
             {
-                int radialPoints = mSeededRandom.Next(3, mPackDensity);
-
-                for (int i = 0; i <= radialPoints; i++)
+                foreach (Vector2 spawn in bears)
                 {
-                    //generate distance in pixels.
-                    int distance = mSeededRandom.Next(35, 150);
-
-                    //generate angle
-                    Vector2 angle = new Vector2((float)Math.Cos((mSeededRandom.Next(-314, 314) / 100)), (float)Math.Sin((mSeededRandom.Next(-314, 314) / 100)));
-
-                    //add the angle * distance to the span point for a new vector.
-                    spawnLocations.Add(spawnLocations[packSize - 1] + angle * distance); //add to the list.
+                    enemyManager.GenerateBears(spawn);
                 }
             }
-            //spawnLocations.Sort((X, Y) => (X.Y.CompareTo(Y.Y)));
 
+            if (wolves.Count > 0)
+            {
+                //creates a set of radial points for pack animals.
+                for (int packCount = wolves.Count; packCount > 0; packCount--)
+                {
+                    List<Vector2> wolfPack = new List<Vector2>();
+                    wolfPack.Add(wolves[packCount - 1]);
+
+                    int radialPoints = mSeededRandom.Next(3, mPackDensity);
+
+                    for (int i = 0; i <= radialPoints; i++)
+                    {
+                        //generate distance in pixels.
+                        int distance = mSeededRandom.Next(35, 150);
+
+                        //generate angle
+                        Vector2 angle = new Vector2((float)Math.Cos((mSeededRandom.Next(-314, 314) / 100)), (float)Math.Sin((mSeededRandom.Next(-314, 314) / 100)));
+
+                        //add the angle * distance to the span point for a new vector.
+                        wolfPack.Add(wolves[packCount - 1] + angle * distance); //add to the list.
+                    }
+                    enemyManager.GenerateWolves(wolfPack);
+                }
+            }
+
+            //spawnLocations.Sort((X, Y) => (X.Y.CompareTo(Y.Y)));
             ////List<Rectangle>() a;
             ////List<Rectangle> b = a.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
             ////List<Rectangle>() a;
